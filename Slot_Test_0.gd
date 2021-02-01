@@ -27,17 +27,17 @@ func _ready():
 #	init_item()
 	pass # Replace with function body.
 	
-func init_item(item_name,item_data):
+func init_item(item_data):
 	if item == null:
 		item= ItemClass.instance()
 		add_child(item);
-	item.set_item(item_name,item_data)
+	item.set_item(item_data)
 func remove_item():
 	if item !=null:
 		item.queue_free()
 	item=null;
 func load_item():
-	init_item(inventory_node.inventory.inventory[slot_index][0],inventory_node.inventory.inventory[slot_index][1])
+	init_item(inventory_node.inventory.inventory[slot_index])
 	
 		
 func pickFromSlot():
@@ -63,8 +63,8 @@ func putIntoSlot(new_item):
 func show_hover_text():
 	if item!=null:
 		GameManager.user_interface.show_basic_hover_text(get_global_mouse_position(),JsonData.description(item.item_name)+
-				"\n \n "+String(inventory_node.inventory.inventory[slot_index][0])+":"+String(inventory_node.inventory.num_items_at(slot_index))+
-				"\n Data:"+JSON.print(inventory_node.inventory.inventory[slot_index][1],"  "))
+				"\n \n "+String(inventory_node.inventory.inventory[slot_index]["Item Name"])+":"+String(inventory_node.inventory.num_items_at(slot_index))+
+				"\n Data:"+JSON.print(inventory_node.inventory.inventory[slot_index]["Statuses"],"  "))
 
 func _on_mouse_entered():
 #	show_hover_text()

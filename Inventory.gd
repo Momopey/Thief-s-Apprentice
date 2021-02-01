@@ -15,34 +15,85 @@ var inventory_ui_s =[]
 
 const NUM_INVENTORY_SLOTS= 60
 
+# Inventory Item Structure:
+# "Type": "Small Stack" | "Pile" | "Large Stack" | "Container" --> enum eventually
+#  If Type == "Small Stack":
+#	"Item Name": String
+#	"Statuses": *[{
+#			"Moist": int --> enum eventually
+#			"Oily": int
+# 			"Burning": int 
+#			"Smelly": int	
+#		}]
+#  If Type == "Pile"
+#   "Pile Type: String
+#	"Hidden Statuses": *[{
+#			"Item Name": String
+#			"Moist": int
+#			"Oily": int
+# 			"Burning": int 
+#			"Smelly": int	
+#		}]
+#  If Type == "Large Stack":
+#	"Item Name": String
+#	"Statuses": *[{
+#			"Moist": int
+#			"Oily": int
+# 			"Burning": int 
+#			"Smelly": int	
+#		}]
+#	"Hidden Statuses": *[{
+#			"Item Name": String
+#			"Moist": int
+#			"Oily": int
+# 			"Burning": int 
+#			"Smelly": int	
+#		}]
+#  If Type == "Container":
+#	"Item Name": String
+#	"Initial Contents":{
+#		// all inventory contents
+#	}
+#	"Inventory": Inventory (need not serialize, but parse)
+
+
+
 var inventory = {
-	0:["Golden Coin",{
+	0:{ "Type": "Small Stack",
+		"Item Name":"Golden Coin",
 		"Statuses":[{"Moist":0,"Oily":0,"Burning":0,"Smelly":0}]
-	}], # --> slot_index: [item_name, item_quantity]
-	1:["White Onion",{
+	},
+	1:{	"Type": "Small Stack",
+		"Item Name":"White Onion",
 		"Statuses":[{"Durability":5,"Moist":0,"Oily":0,"Burning":0,"Smelly":0}]
-	}],
-	2:["Red Drum",{
+	},
+	2:{ "Type": "Container",
+		"Item Name":"Red Drum",
 		"Initial Contents":{
-			0:["Lead",{
+			0:{ "Type": "Small Stack",
+				"Item Name":"Lead",
 				"Statuses":[{"Durability":20,"Moist":0,"Oily":0,"Burning":0,"Smelly":0}]
-			}],
-			1:["Lead",{
+			},
+			1:{ "Type": "Small Stack",
+				"Item Name":"Lead",
 				"Statuses":[{"Durability":20,"Moist":0,"Oily":0,"Burning":0,"Smelly":0}]
-			}],
-			2:["Lead",{
+			},
+			2:{ "Type": "Small Stack",
+				"Item Name":"Lead",
 				"Statuses":[{"Durability":20,"Moist":0,"Oily":0,"Burning":0,"Smelly":0}]
-			}]
+			}
 		},
 		"Inventory":null
-	}],
-	3:["Lead",{
+	},
+	3:{	"Type": "Large Stack",
+		"Item Name":"Lead",
 		"Statuses":[
 			{"Durability":20,"Moist":10,"Oily":0,"Burning":0,"Smelly":0},
 			{"Durability":20,"Moist":0,"Oily":10,"Burning":0,"Smelly":0},
 			{"Durability":20,"Moist":0,"Oily":0,"Burning":0,"Smelly":10}
-		]
-	}],
+		],
+		"Hidden Statuses":[]
+	},
 }
 func bind_ui(inventory_ui:InventoryUI):
 	inventory_ui_s.append(inventory_ui)
@@ -62,21 +113,21 @@ func append_data(index:int,item_data):
 		item_statuses= item_data["Statuses"]
 	assert(item_statuses!=null)
 	if item_statuses.size()>0:
-		inventory[index][1]["Statuses"]+=item_statuses
+		inventory[index]["Statuses"]+=item_statuses
 #	inventory[index][1]=inventory[index][2]["Statuses"].size()
 	update_all_ui_s()
 	
 func num_items_at(index:int):
-	return inventory[index][1]["Statuses"].size()
+	return inventory[index]["Statuses"].size()
 	
-func cleave_data(index:int,amount:int)-> Dictionary:
+func cleave_data(index:int,amount:int):
 #	assert(amount<=inventory[index][1]["Statuses"].size())
-	if amount>inventory[index][1]["Statuses"].size():
-		amount = inventory[index][1]["Statuses"].size()
+	if amount>inventory[index]["Statuses"].size():
+		amount = inventory[index]["Statuses"].size()
 	if amount ==0:
 		return {"Statuses":[]}
-	var cleaved = inventory[index][1]["Statuses"].slice(0,amount-1)
-	inventory[index][1]["Statuses"]=inventory[index][1]["Statuses"].slice(amount,inventory[index][1]["Statuses"].size()-1)
+	var cleaved = inventory[index]["Statuses"].slice(0,amount-1)
+	inventory[index]["Statuses"]=inventory[index]["Statuses"].slice(amount,inventory[index]["Statuses"].size()-1)
 	return {"Statuses":cleaved}
 	
 func add_item(item_name,item_data):
@@ -89,7 +140,7 @@ func add_item(item_name,item_data):
 #		
 		if i in inventory:
 			if num_items_at(i)==0: continue
-			if inventory[i][0]==item_name:
+			if inventory[i]["Item Name"]==item_name:
 				var able_to_add= stack_size-num_items_at(i);
 				if statuses.size()<=able_to_add:
 					append_data(i,statuses)
@@ -101,7 +152,7 @@ func add_item(item_name,item_data):
 		else:
 			if !inventory.has(i)||num_items_at(i)==0:
 				if statuses.size()<=stack_size:
-					inventory[i]= [item_name,{"Statuses":statuses}]
+					inventory[i]= {"Item Name":item_name,"Statuses":statuses}
 					update_all_ui_s()
 					return
 				inventory[i]= [item_name,{"Statuses":statuses.slice(0,stack_size-1)}]
@@ -111,13 +162,13 @@ func add_item(item_name,item_data):
 			
 	
 func add_item_to_empty(item: ItemClass, slot:SlotClass):
-	inventory[slot.slot_index]= [item.item_name,item.item_data]
+	inventory[slot.slot_index]= item.item_data
 	update_all_ui_s()
 func add_item_to_empty_amt(item: ItemClass, slot:SlotClass,amt:int):
-	inventory[slot.slot_index]= [item.item_name,item.cleave_data(amt)]
+	inventory[slot.slot_index]= {"Item Name":item.item_name,"Statuses":item.cleave_data(amt)["Statuses"]}
 	update_all_ui_s()
 func add_item_to_empty_index(item: ItemClass, slot_index:int):
-	inventory[slot_index]= [item.item_name,item.item_data]
+	inventory[slot_index]= item.item_data
 	update_all_ui_s()
 
 func shift_items_between_indexes(index_a:int,index_b:int):
@@ -130,22 +181,22 @@ func shift_items_between_indexes(index_a:int,index_b:int):
 				var stack_size= JsonData.stack_size(inventory[index_a][0])		
 				var able_to_add= stack_size-num_items_at(index_b)
 				if able_to_add<=num_items_at(index_a):
-					append_data(index_b,cleave_data(index_a,able_to_add))
+					append_data(index_b,cleave_data(index_a,able_to_add)["Statuses"])
 #					inventory[index_b][1]=inventory[index_b][1]+able_to_add
 #					inventory[index_a][1]=inventory[index_a][1]-able_to_add
 				else:
-					append_data(index_b,cleave_data(index_a,num_items_at(index_a)))
+					append_data(index_b,cleave_data(index_a,num_items_at(index_a))["Statuses"])
 #					inventory[index_b][1]=inventory[index_b][1]+inventory[index_a][1]
 					inventory.erase(index_a)
 
 func shift_amt_items_between_indexes(index_a:int,index_b:int,amt:int):
 	if index_a in inventory:
 		if !(index_b in inventory):
-			inventory[index_b]= [inventory[index_a][0],cleave_data(index_a,amt)]
-			assert(num_items_at(index_b)<=JsonData.stack_size(inventory[index_b][0]))
+			inventory[index_b]= {"Item Name":inventory[index_a]["Item Name"],"Statuses":cleave_data(index_a,amt)["Statuses"]}
+			assert(num_items_at(index_b)<=JsonData.stack_size(inventory[index_b]["Item Name"]))
 		else:
-			if inventory[index_a][0]==inventory[index_b][0]:
-				var stack_size= JsonData.stack_size(inventory[index_b][0])		
+			if inventory[index_a]["Item Name"]==inventory[index_b]["Item Name"]:
+				var stack_size= JsonData.stack_size(inventory[index_b]["Item Name"])		
 				var able_to_add= stack_size-num_items_at(index_b)
 				if able_to_add>0:
 					if able_to_add<= amt:
@@ -158,7 +209,7 @@ func shift_amt_items_between_indexes(index_a:int,index_b:int,amt:int):
 	
 func update_slot_item(slot:SlotClass):
 	if slot.item!=null:
-		inventory[slot.slot_index]= [slot.item.item_name,slot.item.item_data]
+		inventory[slot.slot_index]= slot.item.item_data
 	else:
 		inventory.erase(slot.slot_index)
 	update_all_ui_s() 		
@@ -198,7 +249,7 @@ func do_physics():
 				var good_around=[]
 				for index_arr in around:
 					good_around.append(index_arr)
-				if num_items_at(ind)> good_around.size()+JsonData.spew_amt(inventory[ind][0]):
+				if num_items_at(ind)> good_around.size()+JsonData.spew_amt(inventory[ind]["Item Name"]):
 					for index_arr in good_around:
 						shift_amt_items_between_indexes(ind,index_arr,1)
 #

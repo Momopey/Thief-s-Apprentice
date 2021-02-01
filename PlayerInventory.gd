@@ -22,13 +22,13 @@ func open_container(slot,inventory_of):
 	var props = JsonData.properties(item.item_name)
 	var inventory_ui_path = "res://scenes/inventories/"+props["InventoryUISceneName"]+".tscn" 
 	var container_inventory_ui = load(inventory_ui_path).instance()
-	var container_inventory = inventory_of.inventory[slot.slot_index][1]["Inventory"]
+	var container_inventory = inventory_of.inventory[slot.slot_index]["Inventory"]
 	if container_inventory ==null:
 		container_inventory = InventoryClass.new()
-		container_inventory.inventory=  inventory_of.inventory[slot.slot_index][1]["Initial Contents"]
+		container_inventory.inventory=  inventory_of.inventory[slot.slot_index]["Initial Contents"]
 		container_inventory.width= JsonData.properties(item.item_name)["Width"]
 		container_inventory.height= JsonData.properties(item.item_name)["Height"]
-		inventory_of.inventory[slot.slot_index][1]["Inventory"]=container_inventory
+		inventory_of.inventory[slot.slot_index]["Inventory"]=container_inventory
 	container_inventory_ui.inventory=container_inventory
 	open_container_ui=container_inventory_ui
 	open_container_slot=slot

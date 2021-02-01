@@ -43,7 +43,7 @@ func init_inventory():
 	for i in range(slots.size()):
 		if inventory.inventory.has(i):
 #			if inventory.inventory[i].size()>2:
-			slots[i].init_item(inventory.inventory[i][0],inventory.inventory[i][1])
+			slots[i].init_item(inventory.inventory[i])
 #			else:
 #				slots[i].init_item(inventory.inventory[i][0],inventory.inventory[i][1]})
 		else: 

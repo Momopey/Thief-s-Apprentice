@@ -39,8 +39,8 @@ func _ready():
 #	item_quantity= randi()%stack_size+1
 	update_item()
 #	
-func set_item(i_name,i_data):
-	item_name= i_name
+func set_item(i_data):
+	item_name= i_data["Item Name"]
 #	item_quantity = i_quantity
 	item_data=i_data
 	update_item();		
