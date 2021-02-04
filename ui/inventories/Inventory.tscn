@@ -1,0 +1,276 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://images/inventorySlots_crap.png" type="Texture" id=1]
+[ext_resource path="res://ui/InventoryUI.gd" type="Script" id=2]
+[ext_resource path="res://ui/item/Item.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/Slot_Test_0.gd" type="Script" id=4]
+[ext_resource path="res://images/inventory_crap.png" type="Texture" id=5]
+
+[sub_resource type="StyleBoxTexture" id=1]
+texture = ExtResource( 1 )
+region_rect = Rect2( 0, 0, 17, 17 )
+
+[node name="InventoryUI" type="Node2D"]
+position = Vector2( 54.2175, 79.0939 )
+script = ExtResource( 2 )
+grid_container_path = NodePath("Node2D/GridContainer")
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2( 6.19324, 8.51562 )
+
+[node name="TextureRect" type="TextureRect" parent="Node2D"]
+margin_left = -320.724
+margin_top = -482.362
+margin_right = -195.724
+margin_bottom = -380.362
+rect_scale = Vector2( 4, 4 )
+mouse_filter = 2
+texture = ExtResource( 5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="Node2D"]
+margin_left = -287.033
+margin_top = -364.968
+margin_right = -178.033
+margin_bottom = -177.968
+rect_scale = Vector2( 2, 2 )
+custom_constants/vseparation = 0
+custom_constants/hseparation = 0
+columns = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel1" type="Panel" parent="Node2D/GridContainer"]
+margin_right = 18.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Item" parent="Node2D/GridContainer/Panel1" instance=ExtResource( 3 )]
+
+[node name="Panel2" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 18.0
+margin_right = 36.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel3" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 36.0
+margin_right = 54.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel4" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 54.0
+margin_right = 72.0
+margin_bottom = 18.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel5" type="Panel" parent="Node2D/GridContainer"]
+margin_top = 18.0
+margin_right = 18.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel6" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 18.0
+margin_top = 18.0
+margin_right = 36.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel7" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 36.0
+margin_top = 18.0
+margin_right = 54.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel8" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 54.0
+margin_top = 18.0
+margin_right = 72.0
+margin_bottom = 36.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel9" type="Panel" parent="Node2D/GridContainer"]
+margin_top = 36.0
+margin_right = 18.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel10" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 18.0
+margin_top = 36.0
+margin_right = 36.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel11" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 36.0
+margin_top = 36.0
+margin_right = 54.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel12" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 54.0
+margin_top = 36.0
+margin_right = 72.0
+margin_bottom = 54.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel13" type="Panel" parent="Node2D/GridContainer"]
+margin_top = 54.0
+margin_right = 18.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel14" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 18.0
+margin_top = 54.0
+margin_right = 36.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel15" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 36.0
+margin_top = 54.0
+margin_right = 54.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel16" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 54.0
+margin_top = 54.0
+margin_right = 72.0
+margin_bottom = 72.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel17" type="Panel" parent="Node2D/GridContainer"]
+margin_top = 72.0
+margin_right = 18.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel18" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 18.0
+margin_top = 72.0
+margin_right = 36.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel19" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 36.0
+margin_top = 72.0
+margin_right = 54.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel20" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 54.0
+margin_top = 72.0
+margin_right = 72.0
+margin_bottom = 90.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel21" type="Panel" parent="Node2D/GridContainer"]
+margin_top = 90.0
+margin_right = 18.0
+margin_bottom = 108.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel22" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 18.0
+margin_top = 90.0
+margin_right = 36.0
+margin_bottom = 108.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel23" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 36.0
+margin_top = 90.0
+margin_right = 54.0
+margin_bottom = 108.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")
+
+[node name="Panel24" type="Panel" parent="Node2D/GridContainer"]
+margin_left = 54.0
+margin_top = 90.0
+margin_right = 72.0
+margin_bottom = 108.0
+rect_min_size = Vector2( 18, 18 )
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+inventory_node_path = NodePath("../../..")

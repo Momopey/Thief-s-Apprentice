@@ -1,0 +1,134 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://ui/item/status_icons/Moist.png" type="Texture" id=1]
+[ext_resource path="res://ui/item/status_icons/Smelly.png" type="Texture" id=2]
+[ext_resource path="res://fonts/m5x7.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://ui/item/Item.gd" type="Script" id=4]
+[ext_resource path="res://ui/item/item_icons/Golden Coin_Stacked.png" type="Texture" id=5]
+[ext_resource path="res://ui/item/status_icons/Oily.png" type="Texture" id=6]
+[ext_resource path="res://ui/item/status_icons/Burning.png" type="Texture" id=7]
+
+[sub_resource type="DynamicFont" id=1]
+font_data = ExtResource( 3 )
+
+[sub_resource type="StyleBoxEmpty" id=2]
+
+[node name="Item" type="Node2D"]
+z_index = 1
+script = ExtResource( 4 )
+moist_icon_path = NodePath("GridContainer/MoistPanel")
+burning_icon_path = NodePath("GridContainer/BurningPanel")
+oily_icon_path = NodePath("GridContainer/OilyPanel")
+smelly_icon_path = NodePath("GridContainer/SmellyPanel")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+margin_left = 0.161822
+margin_top = -0.0827456
+margin_right = 40.1619
+margin_bottom = 39.9173
+rect_scale = Vector2( 0.5, 0.5 )
+mouse_filter = 2
+texture = ExtResource( 5 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="."]
+margin_left = 2.21875
+margin_top = 4.71875
+margin_right = 18.2188
+margin_bottom = 17.7188
+custom_fonts/font = SubResource( 1 )
+text = "27"
+align = 2
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="."]
+margin_left = 1.0
+margin_top = 2.0
+margin_right = 9.0
+margin_bottom = 24.0
+rect_scale = Vector2( 2, 2 )
+mouse_filter = 2
+custom_constants/vseparation = 0
+custom_constants/hseparation = 0
+columns = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MoistPanel" type="Panel" parent="GridContainer"]
+margin_right = 2.0
+margin_bottom = 2.0
+rect_min_size = Vector2( 2, 2 )
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+
+[node name="TextureRect" type="TextureRect" parent="GridContainer/MoistPanel"]
+margin_left = -0.0583534
+margin_top = -0.0389023
+margin_right = 2.94165
+margin_bottom = 2.9611
+texture = ExtResource( 1 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="BurningPanel" type="Panel" parent="GridContainer"]
+margin_left = 2.0
+margin_right = 4.0
+margin_bottom = 2.0
+rect_min_size = Vector2( 2, 2 )
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+
+[node name="TextureRect" type="TextureRect" parent="GridContainer/BurningPanel"]
+margin_right = 3.0
+margin_bottom = 3.0
+texture = ExtResource( 7 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="OilyPanel" type="Panel" parent="GridContainer"]
+margin_left = 4.0
+margin_right = 6.0
+margin_bottom = 2.0
+rect_min_size = Vector2( 2, 2 )
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+
+[node name="TextureRect" type="TextureRect" parent="GridContainer/OilyPanel"]
+margin_left = -0.0194511
+margin_top = 0.0389023
+margin_right = 2.98055
+margin_bottom = 3.0389
+texture = ExtResource( 6 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SmellyPanel" type="Panel" parent="GridContainer"]
+margin_left = 6.0
+margin_right = 8.0
+margin_bottom = 2.0
+rect_min_size = Vector2( 2, 2 )
+mouse_filter = 2
+custom_styles/panel = SubResource( 2 )
+
+[node name="TextureRect" type="TextureRect" parent="GridContainer/SmellyPanel"]
+margin_left = 0.0097599
+margin_top = -0.00969076
+margin_right = 3.00976
+margin_bottom = 2.99031
+texture = ExtResource( 2 )
+expand = true
+__meta__ = {
+"_edit_use_anchors_": false
+}

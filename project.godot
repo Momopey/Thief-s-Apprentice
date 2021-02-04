@@ -17,7 +17,7 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "Inventory",
 "language": "GDScript",
-"path": "res://Inventory.gd"
+"path": "res://entities/Inventory.gd"
 } ]
 _global_script_class_icons={
 "GitAPI": "",
@@ -27,13 +27,13 @@ _global_script_class_icons={
 [application]
 
 config/name="HelloGodot2"
-run/main_scene="res://scenes/3d_scene_test.tscn"
+run/main_scene="res://scenes/main/3d_scene_test.tscn"
 
 [autoload]
 
-JsonData="*res://JSONData.gd"
-PlayerInventory="*res://PlayerInventory.gd"
-GameManager="*res://GameManager.gd"
+JsonData="*res://globals/JSONData.gd"
+PlayerInventory="*res://globals/PlayerInventory.gd"
+GameManager="*res://globals/GameManager.gd"
 
 [gdnative]
 
