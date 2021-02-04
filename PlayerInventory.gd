@@ -17,28 +17,36 @@ func _ready():
 	width = 6
 	height = 10
 	
+var housing_inventory
 func open_container(slot,inventory_of):
 	var item=slot.item
 	var props = JsonData.properties(item.item_name)
 	var inventory_ui_path = "res://scenes/inventories/"+props["InventoryUISceneName"]+".tscn" 
 	var container_inventory_ui = load(inventory_ui_path).instance()
-	var container_inventory = inventory_of.inventory[slot.slot_index]["Inventory"]
-	if container_inventory ==null:
-		container_inventory = InventoryClass.new()
-		container_inventory.inventory=  inventory_of.inventory[slot.slot_index]["Initial Contents"]
-		container_inventory.width= JsonData.properties(item.item_name)["Width"]
-		container_inventory.height= JsonData.properties(item.item_name)["Height"]
-		inventory_of.inventory[slot.slot_index]["Inventory"]=container_inventory
+#	var container_inventory = inventory_of.inventory[slot.slot_index]["Inventory"]
+#	if container_inventory ==null:
+	var container_inventory = InventoryClass.new()
+	if not "Type" in inventory_of.inventory[slot.slot_index]:
+		return
+	if inventory_of.inventory[slot.slot_index]["Type"] != "Container":
+		return
+	container_inventory.inventory= inventory_of.inventory[slot.slot_index]["Initial Contents"]
+	container_inventory.width= JsonData.properties(item.item_name)["Width"]
+	container_inventory.height= JsonData.properties(item.item_name)["Height"]
+#	inventory_of.inventory[slot.slot_index]["Inventory"]=container_inventory
 	container_inventory_ui.inventory=container_inventory
 	open_container_ui=container_inventory_ui
 	open_container_slot=slot
+	housing_inventory= inventory_of
 	GameManager.user_interface.show_inventory_ui(container_inventory_ui,self)
 
 func close_container():
-	GameManager.user_interface.hide_inventory_ui(open_container_ui,self)
-	open_container_ui=null
-	open_container_slot=null
-	open=false
+	if housing_inventory:
+		housing_inventory.inventory[open_container_slot.slot_index]["Initial Contents"]= open_container_ui.inventory.inventory
+		GameManager.user_interface.hide_inventory_ui(open_container_ui,self)
+		open_container_ui=null
+		open_container_slot=null
+		open=false
 #const SlotClass = preload("res://Slot_Test_0.gd")
 #const ItemClass = preload("res://Item.gd")
 #

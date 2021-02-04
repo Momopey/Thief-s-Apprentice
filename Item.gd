@@ -106,7 +106,7 @@ func update_item():
 						any_oily=true
 					if data["Smelly"]>0:
 						any_smelly=true
-					
+
 				moist_icon.visible=any_moist
 				burning_icon.visible= any_burning
 				oily_icon.visible= any_oily

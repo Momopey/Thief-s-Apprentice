@@ -19,7 +19,7 @@ func add_interactive(interactive):
 func remove_interactive(interactive):
 	if interactives.has(interactive):
 		interactives.erase(interactive)
-		if interactive is ChestInteractiveClass:
+		if interactive is ChestInteractiveClass :
 			if interactive.open: 
 				user_interface.hide_inventory_ui(interactive.inventory_ui,interactive)
 

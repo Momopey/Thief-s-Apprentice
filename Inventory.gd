@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 class_name Inventory
 
 const SlotClass = preload("res://Slot_Test_0.gd")
@@ -83,7 +83,6 @@ var inventory = {
 				"Statuses":[{"Durability":20,"Moist":0,"Oily":0,"Burning":0,"Smelly":0}]
 			}
 		},
-		"Inventory":null
 	},
 	3:{	"Type": "Large Stack",
 		"Item Name":"Lead",
@@ -152,10 +151,10 @@ func add_item(item_name,item_data):
 		else:
 			if !inventory.has(i)||num_items_at(i)==0:
 				if statuses.size()<=stack_size:
-					inventory[i]= {"Item Name":item_name,"Statuses":statuses}
+					inventory[i]= item_data
 					update_all_ui_s()
 					return
-				inventory[i]= [item_name,{"Statuses":statuses.slice(0,stack_size-1)}]
+				inventory[i]= {"Item Name":item_name,"Statuses":statuses.slice(0,stack_size-1)}
 				statuses= statuses.slice(stack_size,statuses.size())
 #				assert(statuses.size()==remaining_quant)
 			
@@ -165,7 +164,9 @@ func add_item_to_empty(item: ItemClass, slot:SlotClass):
 	inventory[slot.slot_index]= item.item_data
 	update_all_ui_s()
 func add_item_to_empty_amt(item: ItemClass, slot:SlotClass,amt:int):
-	inventory[slot.slot_index]= {"Item Name":item.item_name,"Statuses":item.cleave_data(amt)["Statuses"]}
+	inventory[slot.slot_index]= {"Type":item.item_data["Type"], "Item Name":item.item_name,"Statuses":item.cleave_data(amt)["Statuses"]}
+	if item.item_data["Type"] == "Container":
+		inventory[slot.slot_index]["Initial Contents"]  = item.item_data["Initial Contents"]
 	update_all_ui_s()
 func add_item_to_empty_index(item: ItemClass, slot_index:int):
 	inventory[slot_index]= item.item_data
@@ -177,8 +178,8 @@ func shift_items_between_indexes(index_a:int,index_b:int):
 			inventory[index_b]= inventory[index_a]
 			inventory.erase(index_a)
 		else:
-			if inventory[index_a][0]==inventory[index_b][0]:
-				var stack_size= JsonData.stack_size(inventory[index_a][0])		
+			if inventory[index_a]["Item Name"]==inventory[index_b]["Item Name"]:
+				var stack_size= JsonData.stack_size(inventory[index_a]["Item Name"])		
 				var able_to_add= stack_size-num_items_at(index_b)
 				if able_to_add<=num_items_at(index_a):
 					append_data(index_b,cleave_data(index_a,able_to_add)["Statuses"])
@@ -253,15 +254,15 @@ func do_physics():
 					for index_arr in good_around:
 						shift_amt_items_between_indexes(ind,index_arr,1)
 #
-#	for row in range(10-1,-1,-1):
-##		print(row)
-#		for col in range(6):
-#			var ind= row*6+col
-#			if ind in inventory:
-#				var ind_below= (row+1)*6+col
-#				if JsonData.gravity(inventory[ind][0]):
-#					if row<9:
-#						shift_items_between_indexes(ind,ind_below)
+	for row in range(10-1,-1,-1):
+#		print(row)
+		for col in range(6):
+			var ind= row*6+col
+			if ind in inventory:
+				var ind_below= (row+1)*6+col
+				if JsonData.gravity(inventory[ind]["Item Name"]):
+					if row<9:
+						shift_items_between_indexes(ind,ind_below)
 #
 
 	update_all_ui_s()

@@ -20,7 +20,6 @@ var inventory # :Inventory
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
-#	user_interface= get_node(user_interface_path)
 	if inventory==null:
 		assert(get_node(inventory_source).has_method("get_inventory"))
 		inventory= get_node(inventory_source).get_inventory()
@@ -90,25 +89,30 @@ func slot_gui_input(event: InputEvent,slot: SlotClass):
 					GameManager.user_interface.play_click();
 			if event.button_index== BUTTON_RIGHT:
 				#Empty Slot
-				if PlayerInventory.holding_item ==null||PlayerInventory.holding_item.item_quantity()==0:
-					slot.show_hover_text()
-				else:
-					if !slot.item:
-						right_click_empty_slot(slot)
-					else: 
-						if(slot.item.item_name==PlayerInventory.holding_item.item_name):\
-							if(slot.item.item_quantity()<JsonData.stack_size(slot.item.item_name)):
-								inventory.append_data(slot.slot_index,PlayerInventory.holding_item.cleave_data(1))
-								if PlayerInventory.holding_item.item_quantity()==0:
-									PlayerInventory.remove_holding_item()
-					
-									
+				var inv_mod= false
 				if slot.item:
 					var item = slot.item
-					if PlayerInventory.open:
-						PlayerInventory.close_container()
 					if JsonData.item_category(item.item_name) == "Container":
+						if PlayerInventory.open:
+							PlayerInventory.close_container()
+							
+						inv_mod=true
 						PlayerInventory.open_container(slot,inventory)
+				if not inv_mod:
+					if PlayerInventory.holding_item ==null||PlayerInventory.holding_item.item_quantity()==0:
+						slot.show_hover_text()
+					else:
+						if !slot.item:
+							right_click_empty_slot(slot)
+						else:
+							if(slot.item.item_name==PlayerInventory.holding_item.item_name):\
+								if(slot.item.item_quantity()<JsonData.stack_size(slot.item.item_name)):
+									inventory.append_data(slot.slot_index,PlayerInventory.holding_item.cleave_data(1))
+									if PlayerInventory.holding_item.item_quantity()==0:
+										PlayerInventory.remove_holding_item()
+					
+									
+			
 #						chest_inventory_ui.inventory=interactive.inventory_source()
 #						user_interface.show_inventory_ui(chest_inventory_ui,interactive)
 

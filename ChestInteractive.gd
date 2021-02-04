@@ -22,6 +22,7 @@ func _ready():
 func _physics_process(delta):
 	velocity = velocity.move_toward(Vector2(0,MAX_SPEED),ACCEL*delta)
 	velocity = move_and_slide(velocity,Vector2.UP)
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
@@ -40,4 +41,5 @@ func _on_ChestZone_body_exited(body):
 		body.remove_interactive(self)
 		
 	pass # Replace with function body.
+
 

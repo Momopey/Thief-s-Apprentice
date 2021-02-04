@@ -19,7 +19,7 @@ var being_picked_up = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	item_name= "Ruby Shard"
-	item_data= {"Statuses":[{"Moist":0,"Oily":0,"Burning":0,"Smelly":0}]}
+	item_data= {"Type": "Small Stack","Item Name": item_name,"Statuses":[{"Moist":0,"Oily":0,"Burning":0,"Smelly":0}]}
 	pass # Replace with function body.
 
 func _physics_process(delta):

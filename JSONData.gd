@@ -7,20 +7,80 @@ var item_data: Dictionary
 # var a = 2
 # var b = "text"
 
+var path := "user://datas/ItemData.json"
 
+var default_data ={
+	"Golden Coin":{
+		"ItemCategory":"Resource",
+		"ShowStackedTexAmt":3,
+		"StackSize": 9,
+		"Gravity":true,
+		"SpewAmt":3,
+		"Description": "Valuable mint gold coins",
+		"Properties":{}
+	},
+	"Ruby Shard":{
+		"ItemCategory":"Resource",
+		"ShowStackedTexAmt":-1,
+		"StackSize":9,
+		"Gravity":true,
+		"SpewAmt":1,
+		"Description": "Rough cut ruby shard"
+	},
+	"White Onion":{
+		"ItemCategory":"Resource",
+		"ShowStackedTexAmt": -1,
+		"StackSize": 1,
+		"Gravity":true,
+		"SpewAmt":0,
+		"Description": "Astonishingly large white onion",
+		"Properties":{}
+	},
+	"Lead":{
+		"ItemCategory":"Resource",
+		"ShowStackedTexAmt":-1,
+		"StackSize":3,
+		"Gravity":false,
+		"SpewAmt":100000,
+		"Description":"Large piece of black lead",
+		"Properties":{}
+	},
+	"Red Drum":{
+		"ItemCategory":"Container",
+		"ShowStackedTexAmt":-1,
+		"StackSize": 1,
+		"Gravity":false,
+		"SpewAmt":100,
+		"Description": "Small red oil drum",
+		"Properties":{
+			"Width":3,
+			"Height":3,
+			"InventoryUISceneName":"InventorySubcontainer"
+		}
+	}
+}
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	item_data= LoadData("res://datas/ItemData.json")
+	item_data = default_data
+#	item_data= LoadData(path)
+#	SaveData()
 	pass # Replace with function body.
 	
-func LoadData(file_path):
-	var json_data
-	var file_data = File.new()
+#func LoadData(file_path):
+#	var json_data
+#	var file_data = File.new()
+#	if not file_data.file_exists(path):
+#		return default_data
+#	file_data.open(file_path,File.READ)
+#	json_data= JSON.parse(file_data.get_as_text());
+#	file_data.close()
+#	return json_data.result;
+#func SaveData():
+#	var file_data = File.new()
+#	file_data.open(path,File.WRITE)
+#	file_data.store_line(to_json(item_data))
+#	file_data.close()
 	
-	file_data.open(file_path,File.READ)
-	json_data= JSON.parse(file_data.get_as_text());
-	file_data.close()
-	return json_data.result;
 func stack_size(item_name):
 	return item_data[item_name]["StackSize"]
 func item_category(item_name):

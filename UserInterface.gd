@@ -1,6 +1,9 @@
 extends CanvasLayer
 var InventoryHover= load("res://scenes/InventoryHover.tscn")
+var InventoryUIClass = load("res://InventoryUI.gd")
 
+export(NodePath) var player_path
+var player
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -9,6 +12,10 @@ var InventoryHover= load("res://scenes/InventoryHover.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	GameManager.user_interface=self
+	player= get_node(player_path)
+#	for inventory_ui in $Control.get_children():
+#		if inventory_ui is InventoryUIClass:
+#			inventory_ui.inventory = player
 #	print(String([1,2,3]+[]))
 #	pass # Replace with function body.
 
@@ -16,7 +23,8 @@ func _input(event):
 	if event.is_action_pressed("inventory"):
 		for inventory_ui in $Control.get_children():
 			inventory_ui.visible=!inventory_ui.visible
-			inventory_ui.init_inventory();
+			if inventory_ui is InventoryUIClass:
+				inventory_ui.init_inventory();
 #		$InventoryUI.visible=!$InventoryUI.visible
 #		$InventoryUI.init_inventory();
 		

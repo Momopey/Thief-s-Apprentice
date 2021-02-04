@@ -1,0 +1,8 @@
+/Users/martinlu/Desktop/GitHub/godot/HelloGodot2/.mono/temp/bin/Debug/HelloGodot2.dll
+/Users/martinlu/Desktop/GitHub/godot/HelloGodot2/.mono/temp/bin/Debug/HelloGodot2.pdb
+/Users/martinlu/Desktop/GitHub/godot/HelloGodot2/.mono/temp/obj/Debug/HelloGodot2.csprojAssemblyReference.cache
+/Users/martinlu/Desktop/GitHub/godot/HelloGodot2/.mono/temp/obj/Debug/HelloGodot2.AssemblyInfoInputs.cache
+/Users/martinlu/Desktop/GitHub/godot/HelloGodot2/.mono/temp/obj/Debug/HelloGodot2.AssemblyInfo.cs
+/Users/martinlu/Desktop/GitHub/godot/HelloGodot2/.mono/temp/obj/Debug/HelloGodot2.csproj.CoreCompileInputs.cache
+/Users/martinlu/Desktop/GitHub/godot/HelloGodot2/.mono/temp/obj/Debug/HelloGodot2.dll
+/Users/martinlu/Desktop/GitHub/godot/HelloGodot2/.mono/temp/obj/Debug/HelloGodot2.pdb

@@ -1,0 +1,44 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://Inventory.gd" type="Script" id=1]
+[ext_resource path="res://ChestInteractive3D.gd" type="Script" id=2]
+[ext_resource path="res://scenes/inventories/Inventory.tscn" type="PackedScene" id=3]
+[ext_resource path="res://images/chest.jpeg" type="Texture" id=4]
+
+[sub_resource type="CubeMesh" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_texture = ExtResource( 4 )
+
+[sub_resource type="ConcavePolygonShape" id=3]
+data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1 )
+
+[sub_resource type="BoxShape" id=4]
+extents = Vector3( 4.42496, 3.2092, 2.97735 )
+
+[node name="Interactive3D" type="KinematicBody"]
+script = ExtResource( 2 )
+inventory_ui_scene = ExtResource( 3 )
+inventory_path = NodePath("Node")
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 0.650935, 0, 0, 0, 0.661663, 0, 0, 0, 0.663999, 0, 0, 0 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 0.650935, 0, 0, 0, 0.661663, 0, 0, 0, 0.663999, 0, 0, 0 )
+shape = SubResource( 3 )
+
+[node name="ChestZone" type="Area" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="ChestZone"]
+transform = Transform( 0.684806, 0, 0, 0, 0.684806, 0, 0, 0, 0.894474, 0, 0, 0 )
+shape = SubResource( 4 )
+
+[node name="Node" type="Node" parent="."]
+script = ExtResource( 1 )
+width = 4
+height = 5
+[connection signal="body_entered" from="ChestZone" to="." method="_on_ChestZone_body_entered"]
+[connection signal="body_exited" from="ChestZone" to="." method="_on_ChestZone_body_exited"]
