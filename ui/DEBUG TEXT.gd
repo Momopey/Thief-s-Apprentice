@@ -1,6 +1,7 @@
 extends RichTextLabel
 
-
+export(NodePath) var player_path
+var player
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -8,13 +9,12 @@ extends RichTextLabel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	player = get_node(player_path)
 	pass # Replace with function body.
-var time := 0 
-func _process(delta):
-	time+=1
-	text="Value:"+String(PlayerInventory.get_value())+"\n"
-	text+=JSON.print(PlayerInventory.inventory," ")
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+func _process(delta):
+	text = "OBJECTIVE: LOOT TO INCREASE UR VALUE \n"
+	text+="Value:"+String(PlayerInventory.get_value())+"\n"
+	pass

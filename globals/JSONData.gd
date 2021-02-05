@@ -17,7 +17,8 @@ var default_data ={
 		"Gravity":true,
 		"SpewAmt":3,
 		"Description": "Valuable mint gold coins",
-		"Properties":{}
+		"Properties":{},
+		"Value": 9
 	},
 	"Ruby Shard":{
 		"ItemCategory":"Resource",
@@ -25,7 +26,8 @@ var default_data ={
 		"StackSize":9,
 		"Gravity":true,
 		"SpewAmt":1,
-		"Description": "Rough cut ruby shard"
+		"Description": "Rough cut ruby shard",
+		"Value": 3
 	},
 	"White Onion":{
 		"ItemCategory":"Resource",
@@ -34,7 +36,8 @@ var default_data ={
 		"Gravity":true,
 		"SpewAmt":0,
 		"Description": "Astonishingly large white onion",
-		"Properties":{}
+		"Properties":{},
+		"Value": 1
 	},
 	"Lead":{
 		"ItemCategory":"Resource",
@@ -43,7 +46,8 @@ var default_data ={
 		"Gravity":false,
 		"SpewAmt":100000,
 		"Description":"Large piece of black lead",
-		"Properties":{}
+		"Properties":{},
+		"Value": 6
 	},
 	"Red Drum":{
 		"ItemCategory":"Container",
@@ -56,7 +60,8 @@ var default_data ={
 			"Width":3,
 			"Height":3,
 			"InventoryUISceneName":"InventorySubcontainer"
-		}
+		},
+		"Value": 12
 	}
 }
 # Called when the node enters the scene tree for the first time.
@@ -91,6 +96,8 @@ func gravity(item_name):
 	return item_data[item_name]["Gravity"]
 func properties(item_name):
 	return item_data[item_name]["Properties"]
+func value(item_name):
+	return item_data[item_name]["Value"]
 func description(item_name):
 	return item_data[item_name]["Description"]
 

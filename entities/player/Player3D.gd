@@ -33,6 +33,7 @@ func _input(event):
 				if !interactive.open:
 					print("INTERACTED NEAR CHEST")
 					var chest_inventory_ui=interactive.inventory_ui_scene.instance()
+#					GameManager.user_interface.set_visible(true)
 					interactive.inventory_ui=chest_inventory_ui
 	#				print(interactive.inventory_source())
 					chest_inventory_ui.inventory=interactive.inventory_source()
@@ -42,7 +43,7 @@ func _input(event):
 					user_interface.hide_inventory_ui(interactive.inventory_ui,interactive)
 	
 func _physics_process(delta):
-	var move_vec= Vector3()
+	var move_vec:= Vector3()
 	move_vec.z += Input.get_action_strength("move_backwards")-Input.get_action_strength("move_forwards")
 	move_vec.x += Input.get_action_strength("move_right")- Input.get_action_strength("move_left")
 	if move_vec.length()>0:
@@ -54,7 +55,11 @@ func _physics_process(delta):
 	move_vec = move_vec.rotated(Vector3(0,1,0),rotation.y)
 	move_vec*= move_vel
 	move_vec.y = y_velo
+#	$pickpocket.rotation.y =- move_vec.angle_to(get_global_transform().basis.z)	
+	if move_vec.length()>0.05:
+		$pickpocket.look_at(transform.origin+Vector3(move_vec.x,0,move_vec.z),Vector3(0,1,0))
 	move_and_slide(move_vec,Vector3(0,1,0))
+	
 	
 	var grounded = is_on_floor()
 	y_velo-=GRAVITY
@@ -77,7 +82,7 @@ func _physics_process(delta):
 			print("play idle anim")
 		else:
 			play_anim("Armature|Walk")
-			anim.playback_speed = move_vec.length()*0.5
+			anim.playback_speed = move_vec.length()*0.65
 		
 func play_anim(name):
 	if anim.current_animation == name:

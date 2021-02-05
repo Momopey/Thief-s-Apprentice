@@ -40,13 +40,20 @@ func open_container(slot,inventory_of):
 	housing_inventory= inventory_of
 	GameManager.user_interface.show_inventory_ui(container_inventory_ui,self)
 
+
 func close_container():
 	if housing_inventory:
-		housing_inventory.inventory[open_container_slot.slot_index]["Initial Contents"]= open_container_ui.inventory.inventory
+		commit_open_container_ui_data()
 		GameManager.user_interface.hide_inventory_ui(open_container_ui,self)
 		open_container_ui=null
 		open_container_slot=null
 		open=false
+func commit_open_container_ui_data():
+	if housing_inventory:
+		housing_inventory.inventory[open_container_slot.slot_index]["Initial Contents"]= open_container_ui.inventory.inventory
+	
+func prep_value_get():
+	commit_open_container_ui_data()
 #const SlotClass = preload("res://Slot_Test_0.gd")
 #const ItemClass = preload("res://Item.gd")
 #

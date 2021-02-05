@@ -6,7 +6,7 @@ extends Panel
 # var b = "text"
 
 var ItemClass= preload("res://ui/item/Item.tscn")
-var InventoryUI = load("res://ui/InventoryUI.gd")
+var InventoryUI = load("res://ui/inventories/InventoryUI.gd")
 
 export(NodePath) var inventory_node_path
 onready var inventory_node= get_node(inventory_node_path)

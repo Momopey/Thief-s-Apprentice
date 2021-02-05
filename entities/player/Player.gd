@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var ChestInteractiveClass = load("res://ChestInteractive.gd")
+var ChestInteractiveClass = preload("res://ChestInteractive.gd")
 export(NodePath) var UI_path;
 var user_interface
 

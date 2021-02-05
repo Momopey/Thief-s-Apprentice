@@ -1,9 +1,10 @@
 [gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://images/inventorySlots_crap.png" type="Texture" id=1]
-[ext_resource path="res://ui/InventoryUI.gd" type="Script" id=2]
+[ext_resource path="res://ui/inventories/InventoryUI.gd" type="Script" id=2]
 [ext_resource path="res://ui/Slot_Test_0.gd" type="Script" id=3]
 [ext_resource path="res://images/inventory_crap.png" type="Texture" id=4]
+
 
 [sub_resource type="StyleBoxTexture" id=1]
 texture = ExtResource( 1 )

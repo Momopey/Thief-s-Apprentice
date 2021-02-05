@@ -3,7 +3,7 @@ class_name Inventory
 
 const SlotClass = preload("res://ui/Slot_Test_0.gd")
 const ItemClass = preload("res://ui/item/Item.gd")
-const InventoryUI= preload("res://ui/InventoryUI.gd")
+const InventoryUI= preload("res://ui/inventories/InventoryUI.gd")
 
 export(int) var width
 export(int) var height
@@ -13,7 +13,8 @@ func get_inventory():
 
 var inventory_ui_s =[]
 
-const NUM_INVENTORY_SLOTS= 60
+const NUM_INVENTORY_SLOTS= 60	
+	
 
 # Inventory Item Structure:
 # "Type": "Small Stack" | "Pile" | "Large Stack" | "Container" --> enum eventually
@@ -92,8 +93,46 @@ var inventory = {
 			{"Durability":20,"Moist":0,"Oily":0,"Burning":0,"Smelly":10}
 		],
 		"Hidden Statuses":[]
-	},
+	}
 }
+func load_json(data:String):
+	if data and data!= "":
+#		print("Inventory JSON PRESENT ------")
+		var inv_cont_parse_results= JSON.parse(data)
+#		if inv_cont_parse_results:
+		if inv_cont_parse_results.error==OK: 
+			print(JSON.print( inv_cont_parse_results.result," "))
+			var untreated_result=inv_cont_parse_results.result
+			var treated_result = {}
+			for key in untreated_result:
+				treated_result[int(key)] = untreated_result[key]
+			inventory= treated_result
+			print("Inventory JSON Loaded ------")
+		else:
+			push_error("INVENTORY CONTENTS JSON PARSE ERROR")
+func prep_value_get():
+	pass
+
+func get_value():
+	prep_value_get()
+	return get_value_inventory(inventory)	
+static func get_value_inventory(inv:Dictionary):
+	var val:= 0
+	for slot_key in inv:
+		val+= get_value_slot(inv[slot_key])
+	return val
+		
+static func get_value_slot(dat:Dictionary):
+#	if dat["Type"] == "Small Stack":
+#	if dat["Type"] == "Large Stack":
+	var val := 0 
+#	print( String(dat))
+	assert("Item Name" in dat)
+	val +=JsonData.value(dat["Item Name"])*dat["Statuses"].size()
+	if dat["Type"] == "Container":
+		val += get_value_inventory(dat["Initial Contents"])
+	return val
+
 func bind_ui(inventory_ui:InventoryUI):
 	inventory_ui_s.append(inventory_ui)
 

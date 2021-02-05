@@ -1,9 +1,10 @@
 extends CanvasLayer
 var InventoryHover= load("res://ui/inventory_hover/InventoryHover.tscn")
-var InventoryUIClass = load("res://ui/InventoryUI.gd")
+var InventoryUIClass = load("res://ui/inventories/InventoryUI.gd")
 
 export(NodePath) var player_path
 var player
+var visible:= false
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
@@ -21,10 +22,14 @@ func _ready():
 
 func _input(event):
 	if event.is_action_pressed("inventory"):
-		for inventory_ui in $Control.get_children():
-			inventory_ui.visible=!inventory_ui.visible
-			if inventory_ui is InventoryUIClass:
-				inventory_ui.init_inventory();
+		set_visible(!visible)
+				
+func set_visible(vis:bool):
+	visible=vis
+	for inventory_ui in $Control.get_children():
+		inventory_ui.visible= visible
+		if inventory_ui is InventoryUIClass:
+			inventory_ui.init_inventory();
 #		$InventoryUI.visible=!$InventoryUI.visible
 #		$InventoryUI.init_inventory();
 		

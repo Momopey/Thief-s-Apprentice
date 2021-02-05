@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://images/inventorySlots_crap.png" type="Texture" id=1]
-[ext_resource path="res://ui/InventoryUI.gd" type="Script" id=2]
-[ext_resource path="res://ui/item/Item.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/inventories/InventoryUI.gd" type="Script" id=2]
 [ext_resource path="res://ui/Slot_Test_0.gd" type="Script" id=4]
 [ext_resource path="res://images/inventory_crap.png" type="Texture" id=5]
 
@@ -50,8 +49,6 @@ rect_min_size = Vector2( 18, 18 )
 custom_styles/panel = SubResource( 1 )
 script = ExtResource( 4 )
 inventory_node_path = NodePath("../../..")
-
-[node name="Item" parent="Node2D/GridContainer/Panel1" instance=ExtResource( 3 )]
 
 [node name="Panel2" type="Panel" parent="Node2D/GridContainer"]
 margin_left = 18.0
