@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://3d_assets/pickpocket.fbx" type="PackedScene" id=1]
-[ext_resource path="res://3d_assets/Material_003.material" type="Material" id=2]
+[ext_resource path="res://3d_assets/ps1_shader.tres" type="Material" id=2]
 
 [node name="pickpocket" instance=ExtResource( 1 )]
 

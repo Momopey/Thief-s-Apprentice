@@ -9,7 +9,7 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "EditorVCSInterface",
+"base": "",
 "class": "GitAPI",
 "language": "NativeScript",
 "path": "res://git_api.gdns"
@@ -34,6 +34,13 @@ run/main_scene="res://scenes/main/3d_scene_test.tscn"
 JsonData="*res://globals/JSONData.gd"
 PlayerInventory="*res://globals/PlayerInventory.gd"
 GameManager="*res://globals/GameManager.gd"
+
+[display]
+
+window/size/width=960
+window/size/height=720
+window/stretch/mode="viewport"
+window/stretch/aspect="keep"
 
 [gdnative]
 
@@ -85,8 +92,15 @@ jump={
 [layer_names]
 
 2d_physics/layer_1="Player"
+3d_render/layer_1="Player"
+3d_physics/layer_1="Player"
 2d_physics/layer_2="World"
+3d_render/layer_2="World"
+3d_physics/layer_2="World"
 2d_physics/layer_3="ItemDrops"
+3d_render/layer_3="ItemDrops"
+3d_physics/layer_3="Item Drops"
+3d_physics/layer_4="Entites"
 2d_physics/Player1=false
 
 [logging]

@@ -1,6 +1,6 @@
 extends KinematicBody2D
 
-var ChestInteractiveClass = preload("res://ChestInteractive.gd")
+var ChestInteractiveClass = preload("res://entities/chests/ChestInteractive.gd")
 export(NodePath) var UI_path;
 var user_interface
 
@@ -27,6 +27,7 @@ onready var sprite = $Sprite
 # Called when the node enters the scene tree for the first time.
 var _timer
 func _ready():
+
 	_timer = Timer.new()
 	add_child(_timer)
 	_timer.connect("timeout", self, "_on_timer_timeout")

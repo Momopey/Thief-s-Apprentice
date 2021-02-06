@@ -19,6 +19,7 @@ onready var anim = $pickpocket/AnimationPlayer
 var move_vel = 0;
 var y_velo = 0
 func _ready():
+	PlayerInventory.player = self
 	user_interface = get_node(UI_path)
 	anim.get_animation("Armature|Walk").set_loop(true)
 	
@@ -56,7 +57,7 @@ func _physics_process(delta):
 	move_vec*= move_vel
 	move_vec.y = y_velo
 #	$pickpocket.rotation.y =- move_vec.angle_to(get_global_transform().basis.z)	
-	if move_vec.length()>0.05:
+	if Vector3(move_vec.x,0,move_vec.z).length()>0.05:
 		$pickpocket.look_at(transform.origin+Vector3(move_vec.x,0,move_vec.z),Vector3(0,1,0))
 	move_and_slide(move_vec,Vector3(0,1,0))
 	

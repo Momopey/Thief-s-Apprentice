@@ -2,6 +2,7 @@ extends Inventory
 
 var holding_item = null
 
+var player = null
 var open = false
 var open_container_slot=null
 var open_container_ui=null
