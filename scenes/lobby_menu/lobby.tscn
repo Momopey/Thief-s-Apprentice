@@ -1,0 +1,53 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://fonts/M5x7_dynamic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://scenes/lobby_menu/lobby.gd" type="Script" id=2]
+
+[node name="Lobby" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="ButtonHost" type="Button" parent="."]
+margin_left = 159.449
+margin_top = 75.7516
+margin_right = 572.449
+margin_bottom = 150.752
+custom_fonts/font = ExtResource( 1 )
+text = "Host"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonJoin" type="Button" parent="."]
+margin_left = 161.038
+margin_top = 256.511
+margin_right = 574.038
+margin_bottom = 331.511
+custom_fonts/font = ExtResource( 1 )
+text = "Join"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ButtonSingleplayer" type="Button" parent="."]
+margin_left = 196.411
+margin_top = 379.851
+margin_right = 541.411
+margin_bottom = 454.851
+custom_fonts/font = ExtResource( 1 )
+text = "Singleplayer"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="IPTextEdit" type="TextEdit" parent="."]
+margin_left = 190.0
+margin_top = 173.0
+margin_right = 527.0
+margin_bottom = 229.0
+text = "IP address to join here"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+[connection signal="pressed" from="ButtonHost" to="." method="_on_ButtonHost_pressed"]
+[connection signal="pressed" from="ButtonJoin" to="." method="_on_ButtonJoin_pressed"]
+[connection signal="pressed" from="ButtonSingleplayer" to="." method="_on_ButtonSingleplayer_pressed"]

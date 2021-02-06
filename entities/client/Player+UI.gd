@@ -1,11 +1,12 @@
 extends Node
 
-var player2_id = -1 
-var user_interface
+onready var player = $Player
+onready var user_interface = $UserInterface
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-
+func get_player():
+	return $Player
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

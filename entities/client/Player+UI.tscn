@@ -1,0 +1,42 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://fonts/M5x7_dynamic.tres" type="DynamicFont" id=1]
+[ext_resource path="res://entities/player/Player3D.tscn" type="PackedScene" id=2]
+[ext_resource path="res://ui/user_interface/UserInterface.tscn" type="PackedScene" id=3]
+[ext_resource path="res://ui/DEBUG TEXT.gd" type="Script" id=4]
+[ext_resource path="res://entities/client/Player+UI.gd" type="Script" id=5]
+
+[node name="Player+UI" type="Spatial"]
+script = ExtResource( 5 )
+
+[node name="Player" parent="." instance=ExtResource( 2 )]
+collision_mask = 10
+UI_path = NodePath("../UserInterface")
+client_path = NodePath("..")
+H_LOOK_SENS = 0.2
+V_LOOK_SENS = 0.2
+
+[node name="UserInterface" parent="." instance=ExtResource( 3 )]
+player_path = NodePath("../Player")
+
+[node name="Control" type="Control" parent="."]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DEBUG TEXT" type="RichTextLabel" parent="Control"]
+margin_left = 34.5877
+margin_top = 41.3002
+margin_right = 394.588
+margin_bottom = 208.3
+rect_scale = Vector2( 2, 2 )
+mouse_filter = 2
+custom_fonts/mono_font = ExtResource( 1 )
+custom_fonts/normal_font = ExtResource( 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+player_path = NodePath("../../Player")

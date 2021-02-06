@@ -1,13 +1,10 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://entities/item/ItemDrop3D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://3d_assets/ps1_shader_floor.tres" type="Material" id=2]
-[ext_resource path="res://ui/user_interface/UserInterface.tscn" type="PackedScene" id=3]
+[ext_resource path="res://entities/client/Player+UI.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/item/ItemDropper3D.tscn" type="PackedScene" id=4]
-[ext_resource path="res://entities/player/Player3D.tscn" type="PackedScene" id=5]
 [ext_resource path="res://entities/chests/Interactive3D.tscn" type="PackedScene" id=6]
-[ext_resource path="res://fonts/M5x7_dynamic.tres" type="DynamicFont" id=7]
-[ext_resource path="res://ui/DEBUG TEXT.gd" type="Script" id=8]
 [ext_resource path="res://entities/citizens/ShopkeeperCitizenEntity/ShopkeeperEntity.tscn" type="PackedScene" id=9]
 
 [sub_resource type="NavigationMesh" id=1]
@@ -98,36 +95,10 @@ collision_mask = 2147483649
 [node name="ShopkeeperEntity" parent="World/Navigation" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.70698, -15.6349 )
 
-[node name="Player" parent="." instance=ExtResource( 5 )]
-collision_mask = 10
-UI_path = NodePath("../UserInterface")
-H_LOOK_SENS = 0.2
-V_LOOK_SENS = 0.2
+[node name="Player1Pos" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.52111, 0.630473, 0 )
 
-[node name="UserInterface" parent="." instance=ExtResource( 3 )]
-player_path = NodePath("../Player")
+[node name="Player2Pos" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.57441, 0.630473, 0 )
 
-[node name="SpecificInterface" type="CanvasLayer" parent="."]
-
-[node name="Control" type="Control" parent="SpecificInterface"]
-margin_right = 40.0
-margin_bottom = 40.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="DEBUG TEXT" type="RichTextLabel" parent="SpecificInterface/Control"]
-margin_left = 34.5877
-margin_top = 41.3002
-margin_right = 394.588
-margin_bottom = 208.3
-rect_scale = Vector2( 2, 2 )
-mouse_filter = 2
-custom_fonts/mono_font = ExtResource( 7 )
-custom_fonts/normal_font = ExtResource( 7 )
-text = "BRUH MACHINE"
-script = ExtResource( 8 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
-player_path = NodePath("../../../Player")
+[node name="Player+UI" parent="." instance=ExtResource( 3 )]

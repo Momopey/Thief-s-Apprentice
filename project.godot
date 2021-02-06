@@ -27,7 +27,7 @@ _global_script_class_icons={
 [application]
 
 config/name="HelloGodot2"
-run/main_scene="res://scenes/main/3d_scene_test.tscn"
+run/main_scene="res://scenes/lobby_menu/lobby.tscn"
 
 [autoload]
 

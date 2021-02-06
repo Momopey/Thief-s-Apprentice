@@ -4,6 +4,8 @@
 [ext_resource path="res://ui/item/item_icons/Ruby Shard.png" type="Texture" id=2]
 
 
+
+
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 13.9837, 14.6541 )
 

@@ -4,6 +4,8 @@ var ChestInteractiveClass = preload("res://entities/chests/ChestInteractive.gd")
 var ChestInteractive3DClass = preload("res://entities/chests/ChestInteractive3D.gd")
 export(NodePath) var UI_path;
 var user_interface
+export(NodePath) var client_path
+var client
 
 export(float) var MOVE_SPEED = 12
 export(float) var MOVE_ACC =20
@@ -21,70 +23,80 @@ var y_velo = 0
 func _ready():
 	PlayerInventory.player = self
 	user_interface = get_node(UI_path)
+	client = get_node(client_path)
 	anim.get_animation("Armature|Walk").set_loop(true)
 	
 func _input(event):
-	if event is InputEventMouseMotion:
-		cam.rotation_degrees.x -= event.relative.y*V_LOOK_SENS
-		cam.rotation_degrees.x = clamp(cam.rotation_degrees.x,-90,90)
-		rotation_degrees.y -= event.relative.x*H_LOOK_SENS
-	if event.is_action_pressed("interact"):
-		for interactive in interactives:
-			if interactive is ChestInteractiveClass|| interactive is ChestInteractive3DClass:
-				if !interactive.open:
-					print("INTERACTED NEAR CHEST")
-					var chest_inventory_ui=interactive.inventory_ui_scene.instance()
-#					GameManager.user_interface.set_visible(true)
-					interactive.inventory_ui=chest_inventory_ui
-	#				print(interactive.inventory_source())
-					chest_inventory_ui.inventory=interactive.inventory_source()
-	#				chest_inventory_ui.user_interface = user_interface
-					user_interface.show_inventory_ui(chest_inventory_ui,interactive)
-				else: 
-					user_interface.hide_inventory_ui(interactive.inventory_ui,interactive)
-	
+	if client.is_network_master():
+		if event is InputEventMouseMotion:
+			cam.rotation_degrees.x -= event.relative.y*V_LOOK_SENS
+			cam.rotation_degrees.x = clamp(cam.rotation_degrees.x,-90,90)
+			rotation_degrees.y -= event.relative.x*H_LOOK_SENS
+		if event.is_action_pressed("interact"):
+			for interactive in interactives:
+				if interactive is ChestInteractiveClass|| interactive is ChestInteractive3DClass:
+					if !interactive.open:
+						print("INTERACTED NEAR CHEST")
+						var chest_inventory_ui=interactive.inventory_ui_scene.instance()
+	#					GameManager.user_interface.set_visible(true)
+						interactive.inventory_ui=chest_inventory_ui
+		#				print(interactive.inventory_source())
+						chest_inventory_ui.inventory=interactive.inventory_source()
+		#				chest_inventory_ui.user_interface = user_interface
+						user_interface.show_inventory_ui(chest_inventory_ui,interactive)
+					else: 
+						user_interface.hide_inventory_ui(interactive.inventory_ui,interactive)
 func _physics_process(delta):
-	var move_vec:= Vector3()
-	move_vec.z += Input.get_action_strength("move_backwards")-Input.get_action_strength("move_forwards")
-	move_vec.x += Input.get_action_strength("move_right")- Input.get_action_strength("move_left")
-	if move_vec.length()>0:
-		move_vel+=MOVE_ACC*delta
-	else:
-		move_vel-=MOVE_ACC*delta
-	move_vel= clamp(move_vel,0,MOVE_SPEED)
-	move_vec = move_vec.normalized()
-	move_vec = move_vec.rotated(Vector3(0,1,0),rotation.y)
-	move_vec*= move_vel
-	move_vec.y = y_velo
-#	$pickpocket.rotation.y =- move_vec.angle_to(get_global_transform().basis.z)	
-	if Vector3(move_vec.x,0,move_vec.z).length()>0.05:
-		$pickpocket.look_at(transform.origin+Vector3(move_vec.x,0,move_vec.z),Vector3(0,1,0))
-	move_and_slide(move_vec,Vector3(0,1,0))
+	if client.is_network_master():
+		var move_vec:= Vector3()
 	
-	
-	var grounded = is_on_floor()
-	y_velo-=GRAVITY
-	var just_jumped = false
-	if grounded:
-		if Input.is_action_just_pressed("jump"):
-			just_jumped=true
-			y_velo = JUMP_FORCE
-		if y_velo<=0:
-			y_velo=-0.1
-		if y_velo <-MAX_FALL_SPEED:
-			y_velo= -MAX_FALL_SPEED
-	
-	if just_jumped:
-#		play jump anim
-		print("play jump anim")
-	elif grounded:
-		if move_vec.length()==0:
-#			play idle
-			print("play idle anim")
+		move_vec.z += Input.get_action_strength("move_backwards")-Input.get_action_strength("move_forwards")
+		move_vec.x += Input.get_action_strength("move_right")- Input.get_action_strength("move_left")
+		if move_vec.length()>0:
+			move_vel+=MOVE_ACC*delta
 		else:
-			play_anim("Armature|Walk")
-			anim.playback_speed = move_vec.length()*0.65
+			move_vel-=MOVE_ACC*delta
+		move_vel= clamp(move_vel,0,MOVE_SPEED)
+		move_vec = move_vec.normalized()
+		move_vec = move_vec.rotated(Vector3(0,1,0),rotation.y)
+		move_vec*= move_vel
+		move_vec.y = y_velo
+	#	$pickpocket.rotation.y =- move_vec.angle_to(get_global_transform().basis.z)	
+		if Vector3(move_vec.x,0,move_vec.z).length()>0.05:
+			$pickpocket.look_at(transform.origin+Vector3(move_vec.x,0,move_vec.z),Vector3(0,1,0))
+		move_and_slide(move_vec,Vector3(0,1,0))
+
 		
+		var grounded = is_on_floor()
+		y_velo-=GRAVITY
+		var just_jumped = false
+		if grounded:
+			if Input.is_action_just_pressed("jump"):
+				just_jumped=true
+				y_velo = JUMP_FORCE
+			if y_velo<=0:
+				y_velo=-0.1
+			if y_velo <-MAX_FALL_SPEED:
+				y_velo= -MAX_FALL_SPEED
+		
+		if just_jumped:
+	#		play jump anim
+			print("play jump anim")
+		elif grounded:
+			if move_vec.length()==0:
+	#			play idle
+				print("play idle anim")
+			else:
+				play_anim("Armature|Walk")
+				anim.playback_speed = move_vec.length()*0.65
+		rpc_unreliable("_set_position",global_transform)
+		rpc_unreliable("_set_anim",anim.current_animation,anim.playback_speed)
+remote func _set_position(trans):
+	global_transform=trans
+remote func _set_anim(curr_anim,cur_speed):
+	anim.current_animation= curr_anim
+#	anim.current_animation_position= cur_pos
+	anim.playback_speed= cur_speed
 func play_anim(name):
 	if anim.current_animation == name:
 		return
