@@ -17,6 +17,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="IPTextEdit" type="TextEdit" parent="."]
+margin_left = 190.0
+margin_top = 173.0
+margin_right = 527.0
+margin_bottom = 229.0
+text = "IP address to join here"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="ButtonJoin" type="Button" parent="."]
 margin_left = 161.038
 margin_top = 256.511
@@ -35,16 +45,6 @@ margin_right = 541.411
 margin_bottom = 454.851
 custom_fonts/font = ExtResource( 1 )
 text = "Singleplayer"
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="IPTextEdit" type="TextEdit" parent="."]
-margin_left = 190.0
-margin_top = 173.0
-margin_right = 527.0
-margin_bottom = 229.0
-text = "IP address to join here"
 __meta__ = {
 "_edit_use_anchors_": false
 }

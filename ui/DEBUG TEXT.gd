@@ -6,7 +6,6 @@ var player
 # var a = 2
 # var b = "text"
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	player = get_node(player_path)
@@ -16,5 +15,5 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	text = "OBJECTIVE: LOOT TO INCREASE UR VALUE \n"
-	text+="Value:"+String(PlayerInventory.get_value())+"\n"
+	text+="Value:"+String(get_parent().get_parent().get_value())+"\n"
 	pass

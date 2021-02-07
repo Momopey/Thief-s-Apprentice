@@ -140,6 +140,15 @@ func update_all_ui_s():
 	for inventory_ui in inventory_ui_s:
 		if inventory_ui!=null:
 			inventory_ui.init_inventory()
+	if get_tree():
+		if get_tree().network_peer:
+			rpc_unreliable("_set_inventory",inventory)
+
+remote func _set_inventory(inv):
+	inventory = inv
+	for inventory_ui in inventory_ui_s:
+		if inventory_ui!=null:
+			inventory_ui.init_inventory()
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"

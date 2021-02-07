@@ -5,8 +5,6 @@
 [ext_resource path="res://ui/inventories/Inventory.tscn" type="PackedScene" id=3]
 [ext_resource path="res://3d_assets/ps1_shader_chest.tres" type="Material" id=4]
 
-
-
 [sub_resource type="CubeMesh" id=1]
 
 [sub_resource type="ConcavePolygonShape" id=2]

@@ -18,6 +18,7 @@ V_LOOK_SENS = 0.2
 
 [node name="UserInterface" parent="." instance=ExtResource( 3 )]
 player_path = NodePath("../Player")
+client_path = NodePath("..")
 
 [node name="Control" type="Control" parent="."]
 margin_right = 40.0

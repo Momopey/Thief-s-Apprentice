@@ -24,6 +24,7 @@ __meta__ = {
 
 [node name="InventoryUI" parent="Control" instance=ExtResource( 1 )]
 position = Vector2( -268.532, -12.227 )
+ui_path = NodePath("../..")
 inventory_source = NodePath("../../../Player")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Control"]
@@ -35,6 +36,7 @@ script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+ui_path = NodePath("../..")
 
 [node name="ClickSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 2 )

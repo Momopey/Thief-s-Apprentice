@@ -11,9 +11,12 @@ var player
 # var a = 2
 # var b = "text"
 # Called when the node enters the scene tree for the first time.
+export(NodePath) var player_client_path
+var player_client
 func _ready():
 	assert(nav is Navigation)
 	timer = get_node(timer_path)
+	player_client = get_node(player_client_path)
 	assert(timer is Timer)
 	pass # Replace with function body.
 
@@ -25,7 +28,7 @@ func _physics_process(delta):
 		else:
 			move_and_slide(direction.normalized()*MOVE_SPEED,Vector3(0,1,0))
 	else:
-		move_to(PlayerInventory.player.global_transform.origin)
+		move_to(player_client.player.global_transform.origin)
 
 var count := 0 
 func move_to(target_pos:Vector3):
@@ -35,8 +38,8 @@ func move_to(target_pos:Vector3):
 	path_node = 0
 
 func _on_Timer_timeout():
-	move_to(PlayerInventory.player.global_transform.origin)
-	var dist = (global_transform.origin-PlayerInventory.player.global_transform.origin).length()
+	move_to(player_client.player.global_transform.origin)
+	var dist = (global_transform.origin-player_client.player.global_transform.origin).length()
 	if dist>10:
 		timer.wait_time= 5
 	elif dist>5:

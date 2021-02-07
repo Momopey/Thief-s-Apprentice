@@ -27,7 +27,7 @@ func _physics_process(delta):
 		
 		var distance= global_transform.origin.distance_squared_to(player.global_transform.origin)
 		if distance<ATTRACT_DIST*ATTRACT_DIST:
-			PlayerInventory.add_item(item_name,item_data)
+			player.client.add_item(item_name,item_data)
 			queue_free()
 	velo = move_and_slide(velo,Vector3.UP)
 

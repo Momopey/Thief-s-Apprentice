@@ -17,17 +17,18 @@ export(float) var V_LOOK_SENS = 1
 
 onready var cam = $CamBase
 onready var anim = $pickpocket/AnimationPlayer
+onready var inventory= get_parent()
 
 var move_vel = 0;
 var y_velo = 0
 func _ready():
-	PlayerInventory.player = self
 	user_interface = get_node(UI_path)
 	client = get_node(client_path)
 	anim.get_animation("Armature|Walk").set_loop(true)
 	
+var interactive_ui
 func _input(event):
-	if client.is_network_master():
+	if client.is_client():
 		if event is InputEventMouseMotion:
 			cam.rotation_degrees.x -= event.relative.y*V_LOOK_SENS
 			cam.rotation_degrees.x = clamp(cam.rotation_degrees.x,-90,90)
@@ -39,15 +40,17 @@ func _input(event):
 						print("INTERACTED NEAR CHEST")
 						var chest_inventory_ui=interactive.inventory_ui_scene.instance()
 	#					GameManager.user_interface.set_visible(true)
-						interactive.inventory_ui=chest_inventory_ui
+#						interactive.inventory_ui=chest_inventory_ui
+						interactive_ui = chest_inventory_ui
 		#				print(interactive.inventory_source())
 						chest_inventory_ui.inventory=interactive.inventory_source()
+						chest_inventory_ui.ui = user_interface
 		#				chest_inventory_ui.user_interface = user_interface
 						user_interface.show_inventory_ui(chest_inventory_ui,interactive)
 					else: 
-						user_interface.hide_inventory_ui(interactive.inventory_ui,interactive)
+						user_interface.hide_inventory_ui(interactive_ui,interactive)
 func _physics_process(delta):
-	if client.is_network_master():
+	if client.is_client():
 		var move_vec:= Vector3()
 	
 		move_vec.z += Input.get_action_strength("move_backwards")-Input.get_action_strength("move_forwards")
@@ -89,10 +92,12 @@ func _physics_process(delta):
 			else:
 				play_anim("Armature|Walk")
 				anim.playback_speed = move_vec.length()*0.65
-		rpc_unreliable("_set_position",global_transform)
-		rpc_unreliable("_set_anim",anim.current_animation,anim.playback_speed)
-remote func _set_position(trans):
+		if client.network():
+			rpc_unreliable("_set_position",global_transform,$pickpocket.global_transform)
+			rpc_unreliable("_set_anim",anim.current_animation,anim.playback_speed)
+remote func _set_position(trans,pick_trans):
 	global_transform=trans
+	$pickpocket.global_transform = pick_trans
 remote func _set_anim(curr_anim,cur_speed):
 	anim.current_animation= curr_anim
 #	anim.current_animation_position= cur_pos
@@ -108,13 +113,14 @@ func add_interactive(interactive):
 	print("INTERACTIVE INRANGE")
 	
 func remove_interactive(interactive):
-	if interactives.has(interactive):
-		interactives.erase(interactive)
-		if interactive is ChestInteractiveClass || interactive is ChestInteractive3DClass:
-			if interactive.open: 
-				user_interface.hide_inventory_ui(interactive.inventory_ui,interactive)
+	if client.is_client():
+		if interactives.has(interactive):
+			interactives.erase(interactive)
+			if interactive is ChestInteractiveClass || interactive is ChestInteractive3DClass:
+				if interactive.open: 
+					user_interface.hide_inventory_ui(interactive_ui,interactive)
 func get_inventory():
-	return PlayerInventory
+	return inventory
 		
 
 

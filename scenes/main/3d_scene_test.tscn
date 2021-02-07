@@ -94,6 +94,7 @@ collision_mask = 2147483649
 
 [node name="ShopkeeperEntity" parent="World/Navigation" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.70698, -15.6349 )
+player_client_path = NodePath("../../../Player+UI")
 
 [node name="Player1Pos" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.52111, 0.630473, 0 )

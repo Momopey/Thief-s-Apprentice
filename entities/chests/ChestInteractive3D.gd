@@ -13,7 +13,6 @@ export(String,MULTILINE) var inventory_contents
 
 var open = false
 var user_interface
-var inventory_ui
 var inventory
 
 func inventory_source():

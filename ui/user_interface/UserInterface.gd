@@ -4,6 +4,9 @@ var InventoryUIClass = load("res://ui/inventories/InventoryUI.gd")
 
 export(NodePath) var player_path
 var player
+export(NodePath) var client_path
+var client
+
 var visible:= false
 # Declare member variables here. Examples:
 # var a = 2
@@ -14,15 +17,19 @@ var visible:= false
 func _ready():
 	GameManager.user_interface=self
 	player= get_node(player_path)
+	client= get_node(client_path)
 #	for inventory_ui in $Control.get_children():
 #		if inventory_ui is InventoryUIClass:
 #			inventory_ui.inventory = player
 #	print(String([1,2,3]+[]))
 #	pass # Replace with function body.
+func get_client():
+	return get_node(client_path)
 
 func _input(event):
-	if event.is_action_pressed("inventory"):
-		set_visible(!visible)
+	if client.is_client():
+		if event.is_action_pressed("inventory"):
+			set_visible(!visible)
 				
 func set_visible(vis:bool):
 	visible=vis
@@ -41,7 +48,8 @@ func show_inventory_ui(inventory_ui,interactive):
 #	add_child(inventory_ui)
 func hide_inventory_ui(inventory_ui,interactive):
 	interactive.open=false
-	inventory_ui.queue_free()
+	if inventory_ui:
+		inventory_ui.queue_free()
 
 var do_hover_text := false
 var hover_text
