@@ -1,7 +1,7 @@
 extends Node
 
-var player2_id = -1 
-var user_interface
+var player2_id = -1
+var clients := []
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"

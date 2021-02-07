@@ -39,7 +39,7 @@ func _on_ButtonJoin_pressed():
 func _player_connected(id):
 	if !game_started:
 		GameManager.player2_id = id 
-		var Game = preload("res://scenes/multiplayer_world/3d_scene_multiplayer_test.tscn").instance()
+		var Game = preload("res://scenes/main/3d_scene_test.tscn").instance()
 		get_tree().get_root().add_child(Game)
 		hide()
 	pass

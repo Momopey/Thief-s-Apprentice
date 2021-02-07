@@ -30,12 +30,20 @@ func remove_holding_item():
 	if holding_item!=null:
 		holding_item.queue_free()
 		holding_item=null
+
+func init():
+#	if !is_client():
+	GameManager.clients.append(self)
+	print("CLIENTS:",GameManager.clients)
 		
+	
 func _ready():
-	width = 6
-	height = 10
 	if !is_client():
 		user_interface.queue_free()
+	init()
+	width = 6
+	height = 10
+
 	
 var housing_inventory
 func open_container(slot,inventory_of):

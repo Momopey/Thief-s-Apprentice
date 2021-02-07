@@ -2,8 +2,8 @@
 
 [ext_resource path="res://entities/item/ItemDrop3D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://3d_assets/ps1_shader_floor.tres" type="Material" id=2]
-[ext_resource path="res://entities/client/Player+UI.tscn" type="PackedScene" id=3]
 [ext_resource path="res://entities/item/ItemDropper3D.tscn" type="PackedScene" id=4]
+[ext_resource path="res://scenes/multiplayer_world/3d_scene_multiplayer_test.gd" type="Script" id=5]
 [ext_resource path="res://entities/chests/Interactive3D.tscn" type="PackedScene" id=6]
 [ext_resource path="res://entities/citizens/ShopkeeperCitizenEntity/ShopkeeperEntity.tscn" type="PackedScene" id=9]
 
@@ -24,6 +24,7 @@ subdivide_depth = 14
 data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1, 1, 1, 1, -1, -1, 1, -1, 1, -1, -1, -1, 1, -1, -1, -1, -1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, -1, 1, -1, -1, 1, -1, 1, -1, 1, -1, -1, 1, 1, -1, -1, -1, -1, 1, 1, -1, -1, 1, -1, -1, -1, 1, 1, 1, -1, 1, 1, 1, 1, -1, -1, 1, 1, -1, 1, -1, 1, 1, -1, -1, -1, 1, 1, -1, 1, -1, -1, -1, 1, -1, 1, 1, -1, -1, -1, -1, -1 )
 
 [node name="World" type="Spatial"]
+script = ExtResource( 5 )
 
 [node name="World" type="Spatial" parent="."]
 
@@ -93,13 +94,10 @@ collision_layer = 2147483649
 collision_mask = 2147483649
 
 [node name="ShopkeeperEntity" parent="World/Navigation" instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.70698, -15.6349 )
-player_client_path = NodePath("../../../Player+UI")
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.578725, -15.6349 )
 
 [node name="Player1Pos" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.52111, 0.630473, 0 )
 
 [node name="Player2Pos" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5.57441, 0.630473, 0 )
-
-[node name="Player+UI" parent="." instance=ExtResource( 3 )]

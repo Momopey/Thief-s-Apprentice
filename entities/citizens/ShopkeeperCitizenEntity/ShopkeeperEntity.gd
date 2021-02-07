@@ -11,24 +11,40 @@ var player
 # var a = 2
 # var b = "text"
 # Called when the node enters the scene tree for the first time.
-export(NodePath) var player_client_path
+#export(NodePath) var player_client_path
+func is_server():
+	if get_tree():
+		if get_tree().network_peer:
+			return get_tree().is_network_server()
+	return true
+
 var player_client
 func _ready():
-	assert(nav is Navigation)
-	timer = get_node(timer_path)
-	player_client = get_node(player_client_path)
-	assert(timer is Timer)
+	if is_server():
+		assert(nav is Navigation)
+		timer = get_node(timer_path)
+	#	player_client = GameManager.clients[0]
+		assert(timer is Timer)
 	pass # Replace with function body.
 
 func _physics_process(delta):
-	if path_node<path.size():
-		var direction = (path[path_node]-global_transform.origin)
-		if direction.length()<1:
-			path_node+=1
+	if is_server():
+		player_client = GameManager.clients[0]
+		for client in GameManager.clients:
+			if (client.player.global_transform.origin -global_transform.origin).length()<(player_client.player.global_transform.origin -global_transform.origin).length():
+				player_client= client
+		if path_node<path.size():
+			var direction = (path[path_node]-global_transform.origin)
+			if direction.length()<1:
+				path_node+=1
+			else:
+				move_and_slide(direction.normalized()*MOVE_SPEED,Vector3(0,1,0))
 		else:
-			move_and_slide(direction.normalized()*MOVE_SPEED,Vector3(0,1,0))
-	else:
-		move_to(player_client.player.global_transform.origin)
+			move_to(player_client.player.global_transform.origin)
+		if get_tree().network_peer:
+			rpc_unreliable("_set_transform",global_transform)
+remote func _set_transform(glob_trans):
+	global_transform= glob_trans
 
 var count := 0 
 func move_to(target_pos:Vector3):

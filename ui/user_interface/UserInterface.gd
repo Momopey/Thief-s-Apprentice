@@ -15,7 +15,6 @@ var visible:= false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	GameManager.user_interface=self
 	player= get_node(player_path)
 	client= get_node(client_path)
 #	for inventory_ui in $Control.get_children():
