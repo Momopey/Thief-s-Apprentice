@@ -1,6 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://entities/citizens/ShopkeeperCitizenEntity/ShopkeeperEntity.gd" type="Script" id=1]
+[ext_resource path="res://entities/citizens/shopkeeper_citizen_entity/ShopkeeperEntity.gd" type="Script" id=1]
 
 [sub_resource type="CapsuleMesh" id=1]
 radius = 0.6
@@ -12,9 +12,11 @@ data = PoolVector3Array( 0, 0, 1.1, 0, 0, 1.1, 0, -0.1042, 1.0909, 0, 0, 1.1, 0.
 radius = 4.95124
 height = 3.81208
 
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 1, 0, 0, 1 )
+
 [node name="ShopkeeperEntity" type="KinematicBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.44639, -15.6349 )
-collision_layer = 8
+collision_layer = 24
 collision_mask = 0
 script = ExtResource( 1 )
 timer_path = NodePath("Timer")
@@ -35,6 +37,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15258, 0 )
 shape = SubResource( 3 )
 
 [node name="PeriferalZone" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 2147483664
 
 [node name="CollisionShape" type="CollisionShape" parent="PeriferalZone"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.15258, 0 )
@@ -42,4 +46,10 @@ shape = SubResource( 3 )
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
+
+[node name="attentions" type="Node" parent="."]
+
+[node name="attention_line" type="ImmediateGeometry" parent="attentions"]
+material_override = SubResource( 4 )
+[connection signal="body_entered" from="PeriferalZone" to="." method="_on_PeriferalZone_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

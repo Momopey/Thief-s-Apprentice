@@ -37,7 +37,7 @@ func _input(event):
 			for interactive in interactives:
 				if interactive is ChestInteractiveClass|| interactive is ChestInteractive3DClass:
 					if !interactive.open:
-						print("INTERACTED NEAR CHEST")
+#						print("INTERACTED NEAR CHEST")
 						var chest_inventory_ui=interactive.inventory_ui_scene.instance()
 	#					GameManager.user_interface.set_visible(true)
 #						interactive.inventory_ui=chest_inventory_ui
@@ -45,6 +45,11 @@ func _input(event):
 		#				print(interactive.inventory_source())
 						chest_inventory_ui.inventory=interactive.inventory_source()
 						chest_inventory_ui.ui = user_interface
+						interactive.emit_attention_event(InteractChestAttentionEvent.new().init(interactive,client.player,0).init_2(InteractChestAttentionEvent.InteractionType.OPEN,client.player))
+#						{
+#							"Action": "Open",
+#							"Disruption Level": 1
+#						}
 		#				chest_inventory_ui.user_interface = user_interface
 						user_interface.show_inventory_ui(chest_inventory_ui,interactive)
 					else: 
@@ -84,11 +89,13 @@ func _physics_process(delta):
 		
 		if just_jumped:
 	#		play jump anim
-			print("play jump anim")
+#			print("play jump anim")
+			pass
 		elif grounded:
 			if move_vec.length()==0:
-	#			play idle
-				print("play idle anim")
+				pass
+#	#			play idle
+#				print("play idle anim")
 			else:
 				play_anim("Armature|Walk")
 				anim.playback_speed = move_vec.length()*0.65
@@ -110,7 +117,7 @@ func play_anim(name):
 var interactives = []
 func add_interactive(interactive):
 	interactives.append(interactive)
-	print("INTERACTIVE INRANGE")
+#	print("INTERACTIVE INRANGE")
 	
 func remove_interactive(interactive):
 	if client.is_client():

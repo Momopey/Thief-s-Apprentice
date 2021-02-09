@@ -9,10 +9,45 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "AttentionEvent",
+"class": "AreaEnterAttentionEvent",
+"language": "GDScript",
+"path": "res://entities/citizens/shopkeeper_citizen_entity/attention_events/AreaEnterAttentionEvent.gd"
+}, {
+"base": "Resource",
+"class": "AttentionEvent",
+"language": "GDScript",
+"path": "res://entities/shared/AttentionEvent.gd"
+}, {
+"base": "Resource",
+"class": "CitizenAI",
+"language": "GDScript",
+"path": "res://entities/citizens/shared_ai/citizen_ai.gd"
+}, {
+"base": "Resource",
+"class": "CitizenFocus",
+"language": "GDScript",
+"path": "res://entities/citizens/shared_ai/citizen_focus.gd"
+}, {
+"base": "Resource",
+"class": "CitizenGoal",
+"language": "GDScript",
+"path": "res://entities/citizens/shared_ai/citizen_goal.gd"
+}, {
+"base": "Resource",
+"class": "CitizenTarget",
+"language": "GDScript",
+"path": "res://entities/citizens/shared_ai/citizen_target.gd"
+}, {
 "base": "",
 "class": "GitAPI",
 "language": "NativeScript",
 "path": "res://git_api.gdns"
+}, {
+"base": "AttentionEvent",
+"class": "InteractChestAttentionEvent",
+"language": "GDScript",
+"path": "res://entities/chests/attention_events/ChestInteractAttentionEvent.gd"
 }, {
 "base": "Node",
 "class": "Inventory",
@@ -20,7 +55,14 @@ _global_script_classes=[ {
 "path": "res://entities/Inventory.gd"
 } ]
 _global_script_class_icons={
+"AreaEnterAttentionEvent": "",
+"AttentionEvent": "",
+"CitizenAI": "",
+"CitizenFocus": "",
+"CitizenGoal": "",
+"CitizenTarget": "",
 "GitAPI": "",
+"InteractChestAttentionEvent": "",
 "Inventory": ""
 }
 
@@ -101,6 +143,7 @@ jump={
 3d_render/layer_3="ItemDrops"
 3d_physics/layer_3="Item Drops"
 3d_physics/layer_4="Entites"
+3d_physics/layer_5="Attendable"
 2d_physics/Player1=false
 
 [logging]

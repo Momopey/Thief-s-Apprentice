@@ -31,10 +31,9 @@ func _ready():
 	if inventory==null:
 		assert(get_node(inventory_source).has_method("get_inventory"))
 		inventory= get_node(inventory_source).get_inventory()
-	print("InventoryUI using inventory:"+String(inventory.name))
+#	print("InventoryUI using inventory:"+String(inventory.name))
 	inventory_slots=get_node(grid_container_path)
-	inventory_slots.columns=inventory.width
-#	for inv_slot in inventory_slots.get_children():
+#	inventory_slots.columns=inventory.width
 	assert(inventory is InventoryClass)
 	inventory.bind_ui(self)
 	for ind in range(inventory_slots.get_children().size()):

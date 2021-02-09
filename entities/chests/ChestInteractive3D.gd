@@ -15,6 +15,19 @@ var open = false
 var user_interface
 var inventory
 
+signal attention_event(data) 
+#
+# data["Form"] : "Interact", "Destroy", "Player" ...
+# data["Type"] : "Container" ...
+# data[ :Type + " Type" ] = "Chest" ...
+# data["Disruption level"] = 0....10
+
+func emit_attention_event(attention_event:InteractChestAttentionEvent):
+	attention_event.object = self
+	emit_signal("attention_event",attention_event)
+
+#signal attention_event(object,data)
+
 func inventory_source():
 	return get_node(inventory_path)
 # Called when the node enters the scene tree for the first time.

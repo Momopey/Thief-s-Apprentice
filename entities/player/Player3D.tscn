@@ -11,7 +11,9 @@ height = 7.07236
 radius = 12.0307
 height = 14.2532
 
-[node name="Player" type="KinematicBody"]
+[node name="Player" type="KinematicBody" groups=[
+"Players",
+]]
 transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 collision_mask = 2
 script = ExtResource( 1 )

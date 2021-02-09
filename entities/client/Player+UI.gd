@@ -40,6 +40,7 @@ func init():
 func _ready():
 	if !is_client():
 		user_interface.queue_free()
+		$Control.queue_free()
 	init()
 	width = 6
 	height = 10

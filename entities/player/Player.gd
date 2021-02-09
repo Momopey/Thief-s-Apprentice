@@ -37,7 +37,7 @@ func _ready():
 	user_interface= get_node(UI_path)
 #	pass # Replace with function body.
 func _on_timer_timeout():
-	PlayerInventory.do_physics()	
+#	PlayerInventory.do_physics()	
 	pass
 
 func _physics_process(delta):
