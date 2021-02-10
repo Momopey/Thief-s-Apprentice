@@ -1,0 +1,139 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://Dialog-System-Example/scripts/dialog_player.gd" type="Script" id=1]
+[ext_resource path="res://Dialog-System-Example/textures/menu_section_9patch.png" type="Texture" id=2]
+[ext_resource path="res://Dialog-System-Example/fonts/speaker_font.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Dialog-System-Example/fonts/body_font.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Dialog-System-Example/stories/Example_Story.tres" type="Resource" id=5]
+[ext_resource path="res://Dialog-System-Example/PromptBox.tscn" type="PackedScene" id=6]
+
+[sub_resource type="Animation" id=1]
+resource_name = "TextDisplay"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:percent_visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
+"update": 0,
+"values": [ 0.0, 1.0 ]
+}
+
+[node name="Dialog_Player" type="Node"]
+script = ExtResource( 1 )
+prompt_box_paths = [ NodePath("Dialog_Box/Body_NinePatchRect/GridContainer/Panel2/Prompt_box"), NodePath("Dialog_Box/Body_NinePatchRect/GridContainer/Panel3/Prompt_box"), NodePath("Dialog_Box/Body_NinePatchRect/GridContainer/Panel4/Prompt_box"), NodePath("Dialog_Box/Body_NinePatchRect/GridContainer/Panel5/Prompt_box") ]
+story_resource = ExtResource( 5 )
+
+[node name="Dialog_Box" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_bottom = -395.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Body_NinePatchRect" type="NinePatchRect" parent="Dialog_Box"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -438.2
+margin_top = -128.738
+margin_right = 377.8
+margin_bottom = 127.262
+rect_min_size = Vector2( 720, 256 )
+texture = ExtResource( 2 )
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer" type="MarginContainer" parent="Dialog_Box/Body_NinePatchRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 16.0
+margin_top = 48.0
+margin_right = -16.0
+margin_bottom = -48.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Body_Label" type="Label" parent="Dialog_Box/Body_NinePatchRect/MarginContainer"]
+margin_right = 784.0
+margin_bottom = 160.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_fonts/font = ExtResource( 4 )
+text = "This is where the dialog text is displayed.
+Press F6 to run this example. ^_^"
+autowrap = true
+
+[node name="Body_AnimationPlayer" type="AnimationPlayer" parent="Dialog_Box/Body_NinePatchRect/MarginContainer/Body_Label"]
+anims/TextDisplay = SubResource( 1 )
+
+[node name="Speaker_NinePatchRect" type="NinePatchRect" parent="Dialog_Box/Body_NinePatchRect"]
+margin_left = -24.3768
+margin_top = -13.2964
+margin_right = 155.623
+margin_bottom = 34.7036
+rect_min_size = Vector2( 180, 48 )
+texture = ExtResource( 2 )
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Speaker_Label" type="Label" parent="Dialog_Box/Body_NinePatchRect/Speaker_NinePatchRect"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 3 )
+text = "Speaker"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="GridContainer" type="GridContainer" parent="Dialog_Box/Body_NinePatchRect"]
+margin_left = -28.0
+margin_top = 233.0
+margin_right = 872.0
+margin_bottom = 305.0
+custom_constants/hseparation = 220
+columns = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Panel2" type="Panel" parent="Dialog_Box/Body_NinePatchRect/GridContainer"]
+
+[node name="Prompt_box" parent="Dialog_Box/Body_NinePatchRect/GridContainer/Panel2" instance=ExtResource( 6 )]
+
+[node name="Panel3" type="Panel" parent="Dialog_Box/Body_NinePatchRect/GridContainer"]
+margin_left = 220.0
+margin_right = 220.0
+
+[node name="Prompt_box" parent="Dialog_Box/Body_NinePatchRect/GridContainer/Panel3" instance=ExtResource( 6 )]
+
+[node name="Panel4" type="Panel" parent="Dialog_Box/Body_NinePatchRect/GridContainer"]
+margin_left = 440.0
+margin_right = 440.0
+
+[node name="Prompt_box" parent="Dialog_Box/Body_NinePatchRect/GridContainer/Panel4" instance=ExtResource( 6 )]
+
+[node name="Panel5" type="Panel" parent="Dialog_Box/Body_NinePatchRect/GridContainer"]
+margin_left = 660.0
+margin_right = 660.0
+
+[node name="Prompt_box" parent="Dialog_Box/Body_NinePatchRect/GridContainer/Panel5" instance=ExtResource( 6 )]
+[connection signal="animation_finished" from="Dialog_Box/Body_NinePatchRect/MarginContainer/Body_Label/Body_AnimationPlayer" to="." method="_on_Body_AnimationPlayer_animation_finished"]

@@ -1,0 +1,54 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Dialog-System-Example/textures/menu_section_9patch.png" type="Texture" id=1]
+[ext_resource path="res://Dialog-System-Example/fonts/speaker_font.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Dialog-System-Example/PromptBox.gd" type="Script" id=3]
+
+[sub_resource type="Animation" id=1]
+loop = true
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rect_scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 1, 1 ), Vector2( 1.05, 1.05 ), Vector2( 1, 1 ) ]
+}
+
+[node name="PromptBox" type="NinePatchRect"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = 205.0
+margin_bottom = 48.0
+rect_min_size = Vector2( 180, 48 )
+rect_scale = Vector2( 1.1, 1.1 )
+texture = ExtResource( 1 )
+patch_margin_left = 3
+patch_margin_top = 3
+patch_margin_right = 3
+patch_margin_bottom = 3
+script = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpaceBar_Label" type="Label" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+custom_fonts/font = ExtResource( 2 )
+text = "1: one gun"
+align = 1
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="SpaceBar_AnimationPlayer" type="AnimationPlayer" parent="."]
+autoplay = "Blink"
+anims/Blink = SubResource( 1 )

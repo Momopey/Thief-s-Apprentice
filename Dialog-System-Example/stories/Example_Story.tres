@@ -1,0 +1,259 @@
+[gd_resource type="Resource" load_steps=2 format=2]
+
+[ext_resource path="res://addons/EXP-System-Dialog/Resource_EditorStory/EXP_EditorStory.gd" type="Script" id=1]
+
+[resource]
+script = ExtResource( 1 )
+TYPE = "EXP_Story_editor"
+names = {
+"Plains/Battle/Bandit": 6,
+"Plains/Battle/Slime": 3,
+"Sign/Village/West/Exit": 4,
+"Village/Battle/Elder": 2,
+"Village/Pot": 5,
+"Village/Start": 1
+}
+story = {
+1: {
+"available_nid": [ 1, 2, 3 ],
+"groups": [  ],
+"human_readable_description": "Waking up in the sleepy starting village.",
+"name": "Village/Start",
+"nodes": {
+
+}
+},
+2: {
+"available_nid": [  ],
+"groups": [  ],
+"human_readable_description": "Village Elder - Battle Tutorial",
+"name": "Village/Battle/Elder",
+"nodes": {
+
+}
+},
+3: {
+"available_nid": [  ],
+"groups": [  ],
+"human_readable_description": "Slime Enemy - Trash Talk",
+"name": "Plains/Battle/Slime",
+"nodes": {
+1: {
+"graph_offset": Vector2( -640, -240 ),
+"links": {
+0: 2
+},
+"rect_size": Vector2( 968, 607 ),
+"slot_amount": 1,
+"text": "<start>",
+"type": "line"
+},
+2: {
+"graph_offset": Vector2( 500, -420 ),
+"links": {
+0: 7,
+1: 8,
+2: 9
+},
+"rect_size": Vector2( 1307.17, 702.667 ),
+"slot_amount": 3,
+"text": "{
+\"Speaker\" : \"Slime\",
+\"Dialog\" : \" Choose wisely scrub WHY THE FUCK IS IT NOT SAVING AM I GOING IN SANE\",
+\"Outs\":  [ 
+		{
+			\"Prompt\" : \"Out 1\",
+			\"Out\":  0
+		},
+		{
+			\"Prompt\" : \"Out 2\",
+			\"Out\":  1
+		}
+	],
+\"Auto\": 1,
+\"Continue\": 2
+}
+",
+"type": "line"
+},
+3: {
+"graph_offset": Vector2( -176, 682 ),
+"links": {
+0: 4
+},
+"rect_size": Vector2( 324, 137 ),
+"slot_amount": 1,
+"text": "
+{
+\"Speaker\":  \"Player\",
+\"Dialog\": \" I'll turn you into breakfast jelly!!\"
+}",
+"type": "line"
+},
+4: {
+"graph_offset": Vector2( 704, 660 ),
+"links": {
+0: 6
+},
+"rect_size": Vector2( 1020, 289 ),
+"slot_amount": 1,
+"text": "{
+\"Speaker\":  \"Slime\",
+\"Dialog\" : \" Eating newbs like you is my jam! PINGAS\"
+}",
+"type": "line"
+},
+5: {
+"graph_offset": Vector2( 3520, 220 ),
+"links": {
+
+},
+"rect_size": Vector2( 324, 137 ),
+"slot_amount": 1,
+"text": "<end>",
+"type": "line"
+},
+6: {
+"graph_offset": Vector2( 1716, 704 ),
+"links": {
+0: 5
+},
+"rect_size": Vector2( 1239, 234 ),
+"slot_amount": 1,
+"text": "{
+\"Speaker\":  \"Slime\",
+\"Dialog\": \" PINGAS!!\"
+}",
+"type": "line"
+},
+7: {
+"graph_offset": Vector2( 2013, -759 ),
+"links": {
+0: 5
+},
+"rect_size": Vector2( 1019, 338.666 ),
+"slot_amount": 1,
+"text": "{
+\"Speaker\" : \"Player \",
+\"Dialog\" : \" Yep this is output 1\",
+\"Outs\":  [ 
+		{
+			\"Prompt\" : \"\",
+			\"Out\":  0
+		}
+	],
+}",
+"type": "line"
+},
+8: {
+"graph_offset": Vector2( 2035, -308 ),
+"links": {
+0: 5
+},
+"rect_size": Vector2( 1125, 490.667 ),
+"slot_amount": 1,
+"text": "{
+\"Speaker\" : \"Player \",
+\"Dialog\" : \" Yep this is output 2\",
+\"Outs\":  [ 
+		{
+			\"Prompt\" : \"\",
+			\"Out\":  0
+		}
+	],
+}",
+"type": "line"
+},
+9: {
+"graph_offset": Vector2( 1870, 209 ),
+"links": {
+0: 5
+},
+"rect_size": Vector2( 1158.33, 439 ),
+"slot_amount": 1,
+"text": "{
+\"Speaker\" : \"Slime \",
+\"Dialog\" : \" aight ur 2 slow\",
+\"Outs\":  [ 
+		{
+			\"Prompt\" : \"\",
+			\"Out\":  0
+		}
+	],
+	\"Auto\": 1,
+	\"Continue\": 0
+}",
+"type": "line"
+}
+}
+},
+4: {
+"available_nid": [  ],
+"groups": [  ],
+"human_readable_description": "Broken Signpost - Nemu Village - West Exit",
+"name": "Sign/Village/West/Exit",
+"nodes": {
+
+}
+},
+5: {
+"available_nid": [  ],
+"groups": [  ],
+"human_readable_description": "Suspicious looking pot - disembodied voice.",
+"name": "Village/Pot",
+"nodes": {
+
+}
+},
+6: {
+"available_nid": [  ],
+"groups": [  ],
+"human_readable_description": "Getting robbed by the bandit who sucks at being a bandit.",
+"name": "Plains/Battle/Bandit",
+"nodes": {
+
+}
+},
+7: {
+"available_nid": [  ],
+"groups": [  ],
+"human_readable_description": "New Dialog - Enter Human Readable Description.",
+"nodes": {
+
+}
+},
+8: {
+"available_nid": [  ],
+"groups": [  ],
+"human_readable_description": "New Dialog - Enter Human Readable Description.",
+"nodes": {
+
+}
+},
+9: {
+"available_nid": [  ],
+"groups": [  ],
+"human_readable_description": "New Dialog - Enter Human Readable Description.",
+"nodes": {
+
+}
+},
+10: {
+"available_nid": [  ],
+"groups": [  ],
+"human_readable_description": "New Dialog - Enter Human Readable Description.",
+"nodes": {
+
+}
+},
+11: {
+"available_nid": [  ],
+"groups": [  ],
+"human_readable_description": "New Dialog - Enter Human Readable Description.",
+"nodes": {
+
+}
+}
+}
+available_dids = [  ]
+groups = [ "Enemies", "Grasslands", "NPCs", "Nemu Village", "Signposts", "Spellbooks", "Tutorials" ]

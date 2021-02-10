@@ -83,6 +83,10 @@ window/size/height=720
 window/stretch/mode="viewport"
 window/stretch/aspect="keep"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "EXP-System-Dialog" )
+
 [gdnative]
 
 singletons=[ "res://git_api.gdnlib" ]
