@@ -45,6 +45,7 @@ func _player_connected(id):
 	pass
 
 func _on_ButtonSingleplayer_pressed():
+#	var Game = preload("res://scenes/main/3d_scene_test.tscn").instance()
 	var Game = preload("res://scenes/main/3d_scene_test.tscn").instance()
 	get_tree().get_root().add_child(Game)
 	hide()

@@ -7,10 +7,9 @@ const ATTRACT_DIST= 10
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
-export(PackedScene) var inventory_ui_scene
-export(NodePath) var inventory_path
-export(String,MULTILINE) var inventory_contents
-
+export(PackedScene) var dialog_scene
+export(Resource) var dialog_story_resource
+export(String) var dialog_title = "Plains/Battle/Slime"
 var open = false
 var inventory
 signal attention_event(data) 
@@ -23,16 +22,8 @@ signal attention_event(data)
 func emit_attention_event(attention_event:InteractChestAttentionEvent):
 	attention_event.object = self
 	emit_signal("attention_event",attention_event)
-
-#signal attention_event(object,data)
-
-func inventory_source():
-	return get_node(inventory_path)
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	inventory = get_node(inventory_path).get_inventory()
-	print("Inventory Contents:",inventory_contents)
-	inventory.load_json(inventory_contents)
 	pass # Replace with function body.
 
 #func _physics_process(delta):
@@ -45,14 +36,13 @@ func _ready():
 func interact(event,player):
 	if event.is_action_pressed("interact"):
 		if !open:
-			var chest_inventory_ui=inventory_ui_scene.instance()
-#			player.interactive_ui = chest_inventory_ui
-#			chest_inventory_ui.inventory=inventory_source()
-#			chest_inventory_ui.ui = player.user_interface
-			emit_attention_event(InteractChestAttentionEvent.new().init(self,player,0).init_2(InteractChestAttentionEvent.InteractionType.OPEN,player))
-			player.user_interface.show_inventory_ui(chest_inventory_ui,self)
-		else: 
-			player.user_interface.hide_inventory_ui(player.interactive_ui,self)
+			var dialog = dialog_scene.instance()
+			dialog.story_resource =dialog_story_resource
+			dialog.story_title = dialog_title
+			dialog.speaker = self
+			dialog.player = player
+			player.user_interface.show_dialog(dialog,self)
+		
 
 
 

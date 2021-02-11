@@ -31,6 +31,7 @@ func kill_with(replacement_targ):
 	pass
 
 func kill():
+	print("Killing target")
 	on_kill()
 	ai.erase_target(self)
 	

@@ -27,33 +27,28 @@ func _ready():
 	anim.get_animation("Armature|Walk").set_loop(true)
 	
 var interactive_ui
+var dialog;
+var dialog_source;
+
 func _input(event):
 	if client.is_client():
 		if event is InputEventMouseMotion:
 			cam.rotation_degrees.x -= event.relative.y*V_LOOK_SENS
 			cam.rotation_degrees.x = clamp(cam.rotation_degrees.x,-90,90)
 			rotation_degrees.y -= event.relative.x*H_LOOK_SENS
-		if event.is_action_pressed("interact"):
-			for interactive in interactives:
-				if interactive is ChestInteractiveClass|| interactive is ChestInteractive3DClass:
-					if !interactive.open:
-#						print("INTERACTED NEAR CHEST")
-						var chest_inventory_ui=interactive.inventory_ui_scene.instance()
-	#					GameManager.user_interface.set_visible(true)
-#						interactive.inventory_ui=chest_inventory_ui
-						interactive_ui = chest_inventory_ui
-		#				print(interactive.inventory_source())
-						chest_inventory_ui.inventory=interactive.inventory_source()
-						chest_inventory_ui.ui = user_interface
-						interactive.emit_attention_event(InteractChestAttentionEvent.new().init(interactive,client.player,0).init_2(InteractChestAttentionEvent.InteractionType.OPEN,client.player))
-#						{
-#							"Action": "Open",
-#							"Disruption Level": 1
-#						}
-		#				chest_inventory_ui.user_interface = user_interface
-						user_interface.show_inventory_ui(chest_inventory_ui,interactive)
-					else: 
-						user_interface.hide_inventory_ui(interactive_ui,interactive)
+#		if event.is_action_pressed("interact"):
+		for interactive in interactives:
+			interactive.interact(event,self)
+#				if interactive is ChestInteractiveClass|| interactive is ChestInteractive3DClass:
+#					if !interactive.open:
+#						var chest_inventory_ui=interactive.inventory_ui_scene.instance()
+#						interactive_ui = chest_inventory_ui
+#						chest_inventory_ui.inventory=interactive.inventory_source()
+#						chest_inventory_ui.ui = user_interface
+#						interactive.emit_attention_event(InteractChestAttentionEvent.new().init(interactive,client.player,0).init_2(InteractChestAttentionEvent.InteractionType.OPEN,client.player))
+#						user_interface.show_inventory_ui(chest_inventory_ui,interactive)
+#					else: 
+#						user_interface.hide_inventory_ui(interactive_ui,interactive)
 func _physics_process(delta):
 	if client.is_client():
 		var move_vec:= Vector3()
@@ -146,3 +141,7 @@ func _process(delta):
 		var pickup_item=items_in_range.values()[0]
 		pickup_item.pick_up_item(self)
 		items_in_range.erase(pickup_item)
+		
+func test_func():
+	
+	print("TESt FUNC CALLED !!!! ")

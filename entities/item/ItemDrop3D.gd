@@ -32,9 +32,11 @@ func _physics_process(delta):
 	velo = move_and_slide(velo,Vector3.UP)
 
 func _process(delta):
-	var camera_pos = get_viewport().get_camera().global_transform.origin
-	camera_pos.y = 0
-	$Sprite3D.look_at(camera_pos, Vector3(0, 1, 0))
+	if get_viewport():
+		if get_viewport().get_camera():
+			var camera_pos = get_viewport().get_camera().global_transform.origin
+			camera_pos.y = 0
+			$Sprite3D.look_at(camera_pos, Vector3(0, 1, 0))
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass

@@ -1,4 +1,18 @@
 extends KinematicBody
+export(PackedScene) var dialog_scene
+export(Resource) var dialog_story_resource
+export(String) var dialog_title = "Plains/Battle/Slime"
+var open = false
+var dialog
+var dialog_target
+
+func kill_dialog_target():
+	print("KILL DIALOG TARGET DONE !!!!")
+	dialog_target.kill_with(null);
+
+var dialog_name = "DR. Robotnik"
+export(Texture) var dialog_speaker_texture
+
 var path = []
 var path_node := 0
 export(float) var MOVE_SPEED = 10
@@ -69,12 +83,28 @@ class SuspiciousSubjectShopkeeperCitizenFocus extends CitizenFocus:
 class SuspiciousSubjectShopkeeperCitizenTarget extends CitizenTarget:
 	func on_activate():
 		print("NOW ACTIVE BUAHAHAH")
+	var count = 0
 	func on_process(delta):
-		print("POG ITS ACTIVE")
+		
+		if (object.global_transform.origin- ai.citizen.global_transform.origin).length()<4:
+			if !ai.citizen.open:
+				ai.citizen.dialog_target = self
+				ai.citizen.dialog = ai.citizen.dialog_scene.instance()
+				ai.citizen.dialog.story_resource =ai.citizen.dialog_story_resource
+				ai.citizen.dialog.story_title = ai.citizen.dialog_title
+				ai.citizen.dialog.speaker = ai.citizen
+				ai.citizen.dialog.player = object
+				
+				object.user_interface.show_dialog(ai.citizen.dialog,ai.citizen)
+				
 		pass
 	func on_physics_process(delta):
+		count+=1
 		ai.citizen.targeting= true
 		ai.citizen.target_loc = object.global_transform.origin
+	func on_kill():
+		ai.citizen.targeting= false
+		print("Killed")
 
 
 var ai:CitizenAI

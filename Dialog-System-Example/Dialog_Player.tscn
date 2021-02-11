@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Dialog-System-Example/scripts/dialog_player.gd" type="Script" id=1]
 [ext_resource path="res://Dialog-System-Example/textures/menu_section_9patch.png" type="Texture" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://Dialog-System-Example/fonts/body_font.tres" type="DynamicFont" id=4]
 [ext_resource path="res://Dialog-System-Example/stories/Example_Story.tres" type="Resource" id=5]
 [ext_resource path="res://Dialog-System-Example/PromptBox.tscn" type="PackedScene" id=6]
+[ext_resource path="res://images/snoopingas.png" type="Texture" id=7]
 
 [sub_resource type="Animation" id=1]
 resource_name = "TextDisplay"
@@ -30,7 +31,11 @@ story_resource = ExtResource( 5 )
 [node name="Dialog_Box" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_bottom = -395.0
+margin_left = 12.1878
+margin_top = 537.928
+margin_right = 12.1878
+margin_bottom = 142.928
+rect_scale = Vector2( 0.5, 0.5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -79,10 +84,14 @@ autowrap = true
 anims/TextDisplay = SubResource( 1 )
 
 [node name="Speaker_NinePatchRect" type="NinePatchRect" parent="Dialog_Box/Body_NinePatchRect"]
-margin_left = -24.3768
-margin_top = -13.2964
-margin_right = 155.623
-margin_bottom = 34.7036
+anchor_left = -0.000453014
+anchor_top = 0.0028882
+anchor_right = -0.000453014
+anchor_bottom = 0.0028882
+margin_left = -22.6303
+margin_top = -52.7394
+margin_right = 291.37
+margin_bottom = 35.2606
 rect_min_size = Vector2( 180, 48 )
 texture = ExtResource( 2 )
 patch_margin_left = 3
@@ -94,12 +103,29 @@ __meta__ = {
 }
 
 [node name="Speaker_Label" type="Label" parent="Dialog_Box/Body_NinePatchRect/Speaker_NinePatchRect"]
+anchor_left = 2.67698e-08
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 99.0
+margin_top = 1.0
+margin_right = -19.0
+margin_bottom = 1.0
 custom_fonts/font = ExtResource( 3 )
 text = "Speaker"
 align = 1
 valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureRect" type="TextureRect" parent="Dialog_Box/Body_NinePatchRect/Speaker_NinePatchRect"]
+margin_left = 11.0
+margin_top = 10.0
+margin_right = 100.0
+margin_bottom = 80.0
+texture = ExtResource( 7 )
+expand = true
+stretch_mode = 1
 __meta__ = {
 "_edit_use_anchors_": false
 }

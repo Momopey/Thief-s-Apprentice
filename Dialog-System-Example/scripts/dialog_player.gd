@@ -14,6 +14,10 @@ var _nid = 0
 var _final_nid = 0
 var _Story_Reader
 export(Resource) var story_resource
+export(String) var story_title
+
+var player 
+var speaker
 # Virtual Methods
 
 func _ready():
@@ -29,7 +33,7 @@ func _ready():
 	_Dialog_Box.visible = false
 	_SpaceBar_Icon.visible = false
 	
-	play_dialog("Plains/Battle/Slime")
+	play_dialog(story_title)
 
 
 func _input(event):
@@ -115,11 +119,10 @@ func _is_waiting():
 
 
 func _get_next_node(ind:int = 0):
-		_nid = _Story_Reader.get_nid_from_slot(_did, _nid, ind)
-		
-		if _nid == _final_nid:
-			_Dialog_Box.visible = false
-
+	_nid = _Story_Reader.get_nid_from_slot(_did, _nid, ind)
+	if _nid == _final_nid:
+		_Dialog_Box.visible = false
+		player.user_interface.hide_dialog(self,speaker)
 
 var data : Dictionary
 func _play_node():
@@ -127,10 +130,23 @@ func _play_node():
 	var result :JSONParseResult= JSON.parse(text)
 	if result.error==OK:
 		data = result.result
-		var speaker = data["Speaker"]
-		var dialog = data["Dialog"]
-		_Speaker_LBL.text = speaker
-		_Body_LBL.text = dialog
+		var speaker_text = data["Speaker"]
+		var dialog_text = data["Dialog"]
+		if "Dialog Start Call" in data:
+			for proc in data["Dialog Start Call"]:
+				if "Func" in proc:
+					get(proc["On"]).call(proc["Func"])
+#					if self.has_
+#					match proc["On"]:
+#						"player":
+#							player.call(proc["Func"])s
+		
+		_Speaker_LBL.text = speaker_text
+		if speaker.get("dialog_name") == speaker_text:
+			print("IT IS THE SPEAKER TALKING")
+			$Dialog_Box/Body_NinePatchRect/Speaker_NinePatchRect/TextureRect.texture = speaker.dialog_speaker_texture
+		
+		_Body_LBL.text = dialog_text
 		for prompt_box in prompt_boxes:
 			prompt_box.visible = false
 		for i in range(data["Outs"].size()):

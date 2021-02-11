@@ -138,11 +138,14 @@ func _insert_target(targ): #:CitizenTarget
 
 func erase_target(targ): # :CitizenTarget
 	if targ in targets:
-		if targ == targets[0]:
+		if targ == active_target:
+			print("Erasing first targ")
 			targets.erase(targ)
 			if targets.size()>0:
 				active_target = targets[0]
 				active_target.on_activate()
+			else:
+				active_target=null
 		else:
 			targets.erase(targ)
 			

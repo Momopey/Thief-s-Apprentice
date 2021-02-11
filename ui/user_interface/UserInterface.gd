@@ -33,13 +33,17 @@ func _input(event):
 func set_visible(vis:bool):
 	visible=vis
 	for inventory_ui in $Control.get_children():
-		inventory_ui.visible= visible
-		if inventory_ui is InventoryUIClass:
-			inventory_ui.init_inventory();
+		if inventory_ui is InventoryUI:
+			inventory_ui.visible= visible
+			if inventory_ui is InventoryUIClass:
+				inventory_ui.init_inventory();
 #		$InventoryUI.visible=!$InventoryUI.visible
 #		$InventoryUI.init_inventory();
 		
 func show_inventory_ui(inventory_ui,interactive):
+	player.interactive_ui = inventory_ui
+	inventory_ui.inventory=interactive.inventory_source()
+	inventory_ui.ui = player.user_interface
 	interactive.open= true
 	inventory_ui.visible=true
 #	inventory_ui.get_parent().remove_child(inventory_ui)
@@ -49,6 +53,24 @@ func hide_inventory_ui(inventory_ui,interactive):
 	interactive.open=false
 	if inventory_ui:
 		inventory_ui.queue_free()
+		
+func show_dialog(dialog,interactive):
+	if player.dialog:
+		hide_dialog(player.dialog,player.dialog_source)
+	interactive.open= true
+	player.dialog= dialog;
+	player.dialog_source = interactive;
+#	dialog.visible=true
+	$Control.add_child(dialog)
+	
+func hide_dialog(dialog,interactive):
+	interactive.open= false
+	if player.dialog == dialog:
+		player.dialog = null
+		player.dialog_source= null
+#	dialog.visible=false
+	if dialog:
+		dialog.queue_free()
 
 var do_hover_text := false
 var hover_text

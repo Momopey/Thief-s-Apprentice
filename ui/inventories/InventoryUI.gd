@@ -1,4 +1,5 @@
 extends Node2D
+class_name InventoryUI
 
 const SlotClass = preload("res://ui/Slot_Test_0.gd")
 var InventoryClass = load("res://entities/Inventory.gd")

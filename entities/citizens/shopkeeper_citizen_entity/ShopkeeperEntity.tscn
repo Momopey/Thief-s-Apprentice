@@ -1,8 +1,16 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://entities/citizens/shopkeeper_citizen_entity/ShopkeeperEntity.gd" type="Script" id=1]
+[ext_resource path="res://Dialog-System-Example/stories/Example_Story.tres" type="Resource" id=2]
+[ext_resource path="res://Dialog-System-Example/Dialog_Player.tscn" type="PackedScene" id=3]
+[ext_resource path="res://images/snoopingas.png" type="Texture" id=4]
+[ext_resource path="res://images/pingas2.png" type="Texture" id=5]
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_texture = ExtResource( 4 )
 
 [sub_resource type="CapsuleMesh" id=1]
+material = SubResource( 5 )
 radius = 0.6
 
 [sub_resource type="ConcavePolygonShape" id=2]
@@ -19,6 +27,9 @@ albedo_color = Color( 1, 0, 0, 1 )
 collision_layer = 24
 collision_mask = 0
 script = ExtResource( 1 )
+dialog_scene = ExtResource( 3 )
+dialog_story_resource = ExtResource( 2 )
+dialog_speaker_texture = ExtResource( 5 )
 timer_path = NodePath("Timer")
 
 [node name="MeshInstance" type="MeshInstance" parent="."]

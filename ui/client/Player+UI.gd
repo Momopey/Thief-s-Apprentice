@@ -68,13 +68,12 @@ func open_container(slot,inventory_of):
 	open_container_ui=container_inventory_ui
 	open_container_slot=slot
 	housing_inventory= inventory_of
-	GameManager.user_interface.show_inventory_ui(container_inventory_ui,self)
-
+	user_interface.show_inventory_ui(container_inventory_ui,self)
 
 func close_container():
 	if housing_inventory:
 		commit_open_container_ui_data()
-		GameManager.user_interface.hide_inventory_ui(open_container_ui,self)
+		user_interface.hide_inventory_ui(open_container_ui,self)
 		open_container_ui=null
 		open_container_slot=null
 		open=false
