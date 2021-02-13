@@ -18,5 +18,8 @@ func node_to_focus(object:Node,attention_event):
 func focused_event_to_target(focus,attention_event): # -> CitizenTarget
 	return null 
 
+func goal_process(delta):
+	pass
+
 func _ready():
 	pass

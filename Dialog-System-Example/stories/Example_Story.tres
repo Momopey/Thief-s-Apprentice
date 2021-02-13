@@ -36,7 +36,6 @@ story = {
 "slot_amount": 3,
 "text": "{
 \"Speaker\" : \"DR. Robotnik\",
-\"Dialog Start Call\": [{\"Func\":\"kill_dialog_target\",\"On\":\"speaker\"}],
 \"Dialog\" : \" SNOOPING AS USUAL, I SEE! \",
 \"Outs\":  [ 
 		{
@@ -105,7 +104,7 @@ story = {
 "type": "line"
 },
 7: {
-"graph_offset": Vector2( 2013, -759 ),
+"graph_offset": Vector2( 1880, -820 ),
 "links": {
 0: 5
 },
@@ -113,7 +112,8 @@ story = {
 "slot_amount": 1,
 "text": "{
 \"Speaker\" : \"Player \",
-\"Dialog\" : \" Yep this is output 1\",
+\"Dialog\" : \" NOT ME! why would i touch your trash\",
+\"Dialog End Call\": [{\"Func\":\"kill_dialog_target\",\"On\":\"speaker\"}],
 \"Outs\":  [ 
 		{
 			\"Prompt\" : \"\",

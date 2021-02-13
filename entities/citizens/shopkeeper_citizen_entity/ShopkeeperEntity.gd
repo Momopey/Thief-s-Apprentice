@@ -35,14 +35,14 @@ func is_server():
 
 var player_client
 
-
 #class ShopkeeperAI extends CitizenAI:
-#	pass
+
 export(Array,NodePath) var chest_paths	
 var chests := []
 func _ready():
 	ai = CitizenAI.new()
 	ai.init(self,[PreventTheftShopkeeperCitizenGoal.new()])
+	
 	if is_server():
 		assert(nav is Navigation)
 		timer = get_node(timer_path)
@@ -50,6 +50,7 @@ func _ready():
 		assert(timer is Timer)
 	for chest_path in chest_paths:
 		chests.append(get_node(chest_path))	
+		ai.on_object_attend(get_node(chest_path),AreaEnterAttentionEvent.new().init(self,get_node(chest_path),0).init_2($LocalZone))
 #		get_node(chest_path).connect("attention_event",self,"_bruh")
 	
 	pass # Replace with function body.
@@ -62,7 +63,7 @@ class PreventTheftShopkeeperCitizenGoal extends CitizenGoal:
 			if attention_event.area == ai.citizen.get_node("LocalZone"):
 				print("LOCALZONE ENTERED:"+ str(attention_event.object))
 				if attention_event.subject in ai.citizen.chests:
-					return CitizenFocus.new().init(ai,self,object)
+					return ChestInspectShopkeeperCitizenFocus.new().init(ai,self,object)
 		if attention_event is InteractChestAttentionEvent:
 			return SuspiciousSubjectShopkeeperCitizenFocus.new().init(ai,self,attention_event.actor)
 		
@@ -72,20 +73,66 @@ class PreventTheftShopkeeperCitizenGoal extends CitizenGoal:
 			if focus.salience>3:
 				print("bruh")
 				print_stack()
-				return SuspiciousSubjectShopkeeperCitizenTarget.new().init(ai,self,focus.object)
+				return SuspiciousSubjectShopkeeperCitizenTarget.new().init(ai,self,focus)
+#		if focus is ChestInspectShopkeeperCitizenFocus:
+#			return ChestInspectShopkeeperCitizenTarget.new().init(ai,self,focus.object)
 		return null
-	
+	func goal_process(delta):
+		var best_found := false
+		for focus in ai.focuses:
+			if focus is ChestInspectShopkeeperCitizenFocus:
+				if not best_found:
+					focus.salience -= 3
+					ai.add_target(ChestInspectShopkeeperCitizenTarget.new().init(ai,self,focus))
+					best_found = true
+				else: 
+					focus.salience += 1
+					if focus.salience>4:
+						focus.salience = 4
+						
+				continue
+		
+class ChestInspectShopkeeperCitizenFocus extends CitizenFocus:
+	func on_attention_event(attention_event):
+		salience+=1
+		pass
+class ChestInspectShopkeeperCitizenTarget extends CitizenTarget:
+	func on_activate():
+		ai.citizen.get_node("DialogStab").start_text_stab("\n[center][wave amp=50 freq=20] Checking up on chest numero "+ str(ai.citizen.chests.find(object)) +"[/wave][/center]",1,2,true)
+		prominence = 5;
+#		print("now going to chest")		
+		pass
+		
+	func on_process(delta):
+		if (object.global_transform.origin- ai.citizen.global_transform.origin).length()<3:
+			kill()
+		pass
+		
+	func on_physics_process(delta):
+		ai.citizen.targeting= true
+		ai.citizen.target_loc = object.global_transform.origin
+		if not object in ai.citizen.chests:
+			print("IT IS PLAYER?");
+		
+	func on_kill():
+		ai.citizen.targeting= false
+		
+		print("Killing chest inspect")
+		
+		
 class SuspiciousSubjectShopkeeperCitizenFocus extends CitizenFocus:
+	func on_add():
+		salience = 5
 	func on_attention_event(attention_event):
 		salience+=1
 		pass
 		
 class SuspiciousSubjectShopkeeperCitizenTarget extends CitizenTarget:
 	func on_activate():
+		prominence = 3
 		print("NOW ACTIVE BUAHAHAH")
 	var count = 0
 	func on_process(delta):
-		
 		if (object.global_transform.origin- ai.citizen.global_transform.origin).length()<4:
 			if !ai.citizen.open:
 				ai.citizen.dialog_target = self
@@ -103,8 +150,11 @@ class SuspiciousSubjectShopkeeperCitizenTarget extends CitizenTarget:
 		ai.citizen.targeting= true
 		ai.citizen.target_loc = object.global_transform.origin
 	func on_kill():
+#		ai.citizen.target_loc = null
+		prominence -= 100
+		focus.salience -= 10;
 		ai.citizen.targeting= false
-		print("Killed")
+		print("Killed SuspiciousSubject Targeting ")
 
 
 var ai:CitizenAI
@@ -115,12 +165,7 @@ func _physics_process(delta):
 	if is_server():
 		player_client = GameManager.clients[0]
 		ai.on_physics_process(delta)
-#		for client in GameManager.clients:
-#			if (client.player.global_transform.origin -global_transform.origin).length()<(player_client.player.global_transform.origin -global_transform.origin).length():
-#				player_client= client
-#		targeting= false
-#		target_loc = player_client.player.global_transform.origin
-		if targeting:
+		if targeting and target_loc:
 			if path_node<path.size():
 				var direction = (path[path_node]-global_transform.origin)
 				if direction.length()<1:
@@ -143,16 +188,16 @@ func move_to(target_pos:Vector3):
 
 func _on_Timer_timeout():
 	if targeting:
-		move_to(player_client.player.global_transform.origin)
-		var dist = (global_transform.origin-target_loc).length()
-		if dist>10:
-			timer.wait_time= 5
-		elif dist>5:
-			timer.wait_time = 2
-		else:
-			timer.wait_time = 0.5
-	#	timer.
-		pass # Replace with function body.
+		if target_loc:
+			move_to(target_loc)
+			var dist = (global_transform.origin-target_loc).length()
+			if dist>10:
+				timer.wait_time= 5
+			elif dist>5:
+				timer.wait_time = 2
+			else:
+				timer.wait_time = 0.5
+			pass # Replace with function body.
 	
 #var points :=  []
 func _process(delta):
@@ -172,4 +217,11 @@ func _on_PeriferalZone_body_entered(body):
 		ai.on_object_attend(body,AreaEnterAttentionEvent.new().init(self,body,0).init_2($LocalZone))
 	else:
 		print("AI NULL")
+	pass # Replace with function body.
+	
+
+
+
+func _on_GoalProcessTimer_timeout():
+	ai.goal_process($GoalProcessTimer.wait_time)
 	pass # Replace with function body.

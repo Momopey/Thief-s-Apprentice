@@ -92,6 +92,10 @@ func _on_press_number(num:int):
 			_SpaceBar_Icon.visible = false
 			var out =data["Outs"][num-1]["Out"];
 			if _Story_Reader.get_slot_count(_did, _nid)>out:
+				if "Dialog End Call" in data:
+						for proc in data["Dialog End Call"]:
+							if "Func" in proc:
+								get(proc["On"]).call(proc["Func"])
 				_get_next_node(out)
 				if _is_playing():
 					_play_node()

@@ -46,7 +46,7 @@ var targets = []
 var max_targets = 4
 
 var focuses = []
-var max_focuses = 8
+var max_focuses = 6
 onready var CitizenGoalClass = load("res://entities/citizens/shared_ai/citizen_goal.gd")
 
 var active_target: CitizenTarget
@@ -63,32 +63,51 @@ func init(_citizen: Node,_goals:Array):
 		goal.init(self)
 	goals= _goals
 	
+func object_attended(obj:Node):
+	for focus in focuses:
+		if focus.object == obj:
+			return focus
+	return null
+	
 func on_object_attend(obj:Node,attention_event): # obj:Node, attention_event:AttentionEvent
-#	print("ATTENDING TO ATTENTION EVENT")
 	var in_focus := false
 	for focus in focuses:
 		if focus.object == obj:
 			focus.on_attention_event(attention_event)
-			var new_target = focus.goal.focused_event_to_target(focus,attention_event)
-			if new_target:
-				print("NEW TARGET MADE")
-				new_target.ai = self
-				add_target(new_target)
 			in_focus = true
+			var in_target:= false
+			for target in targets:
+				if target.focus == focus:
+					target.on_attention_event(attention_event)
+					in_target = true
+			if not in_target:
+				var new_target = focus.goal.focused_event_to_target(focus,attention_event)
+				if new_target:
+					print("NEW TARGET MADE")
+					add_target(new_target)
+				
 		
 	if not in_focus:
 		for goal in goals:
 #			print("Creating new focus")
 			var new_focus = goal.node_to_focus(attention_event.subject,attention_event)
 			if new_focus:
-#				print("Created new focus")
 				new_focus.goal = goal
 				new_focus.ai = self
 				new_focus.object.connect("attention_event",self,"_on_attention_event")
+				new_focus.on_add()
 				focuses.append(new_focus)
-			focuses.sort_custom(PrioritiesSorter,"sort_focus_salience")
+#				new_focus.on_attention_event(attention_event)
+#				var new_target =  goal.focused_event_to_target(new_focus,attention_event)
+#				if new_target:
+#					new_target.ai = self
+#					add_target(new_target)
+			sort_focuses()
 			if focuses.size()>max_focuses:
 				focuses = focuses.slice(0,max_focuses-1)
+
+func sort_focuses():
+	focuses.sort_custom(PrioritiesSorter,"sort_focus_salience")
 
 func on_physics_process(delta):
 	if active_target:
@@ -113,6 +132,7 @@ func focused_objs():
 	return foc_objs
 
 func add_target(targ):# :CitizenTarget
+	targ.ai = self
 	if targets.size()==0:
 		targets.append(targ)
 		active_target = targ
@@ -121,7 +141,7 @@ func add_target(targ):# :CitizenTarget
 		var index = _insert_target(targ)
 		var active_target_index = targets.find(active_target)
 		if index<active_target_index:
-			active_target.kill_with(targ)
+			active_target.replace_with(targ)
 		if targets.size()>max_targets:
 			for i in range(max_targets,targets.size()-1):
 				if targets[i] == active_target:
@@ -135,11 +155,16 @@ func _insert_target(targ): #:CitizenTarget
 			return ind
 	targets.append(targ)
 	return targets.size()-1
+	
+func sort_targets():
+	targets.sort_custom(PrioritiesSorter,"sort_target_prominence")
+	if targets.size()>0:
+		if active_target != targets[0]:
+			active_target.replace_with(targets[0])
 
 func erase_target(targ): # :CitizenTarget
 	if targ in targets:
 		if targ == active_target:
-			print("Erasing first targ")
 			targets.erase(targ)
 			if targets.size()>0:
 				active_target = targets[0]
@@ -148,8 +173,21 @@ func erase_target(targ): # :CitizenTarget
 				active_target=null
 		else:
 			targets.erase(targ)
-			
+func pass_target(targ):
+	if targ == active_target:
+		if targets.size()>0:
+			active_target = targets[0]
+			active_target.on_activate()
+		else:
+			active_target=null
+	
+func goal_process(delta):
+	for goal in goals:
+		goal.goal_process(delta)			
+
 class PrioritiesSorter:
 	static func sort_focus_salience(a,b):
 		return b.salience< a.salience
+	static func sort_target_prominence(a,b):
+		return b.prominence< a.prominence
 

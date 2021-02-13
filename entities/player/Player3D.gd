@@ -1,4 +1,5 @@
 extends KinematicBody
+class_name Player3D
 
 var ChestInteractiveClass = preload("res://entities/chests/ChestInteractive.gd")
 var ChestInteractive3DClass = preload("res://entities/chests/ChestInteractive3D.gd")
