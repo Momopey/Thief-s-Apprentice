@@ -36,7 +36,7 @@ story = {
 "slot_amount": 3,
 "text": "{
 \"Speaker\" : \"DR. Robotnik\",
-\"Dialog\" : \" SNOOPING AS USUAL, I SEE! \",
+\"Dialog BBCode\": \" [wave amp=50 freq=20] SNOOPING AS USUAL, I SEE! [/wave]\",
 \"Outs\":  [ 
 		{
 			\"Prompt\" : \"NOT ME ..\",
@@ -111,7 +111,7 @@ story = {
 "rect_size": Vector2( 1019, 338.666 ),
 "slot_amount": 1,
 "text": "{
-\"Speaker\" : \"Player \",
+\"Speaker\" : \"Player\",
 \"Dialog\" : \" NOT ME! why would i touch your trash\",
 \"Dialog End Call\": [{\"Func\":\"kill_dialog_target\",\"On\":\"speaker\"}],
 \"Outs\":  [ 
@@ -124,14 +124,14 @@ story = {
 "type": "line"
 },
 8: {
-"graph_offset": Vector2( 2035, -308 ),
+"graph_offset": Vector2( 2040, -300 ),
 "links": {
 0: 5
 },
 "rect_size": Vector2( 1125, 490.667 ),
 "slot_amount": 1,
 "text": "{
-\"Speaker\" : \"Player \",
+\"Speaker\" : \"Player\",
 \"Dialog\" : \" Yep this is output 2\",
 \"Outs\":  [ 
 		{
@@ -150,7 +150,7 @@ story = {
 "rect_size": Vector2( 1158.33, 439 ),
 "slot_amount": 1,
 "text": "{
-\"Speaker\" : \"Slime \",
+\"Speaker\" : \"Slime\",
 \"Dialog\" : \" aight ur 2 slow\",
 \"Outs\":  [ 
 		{

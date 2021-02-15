@@ -2,6 +2,7 @@ extends Spatial
 
 
 func _ready():
+	$Viewport/Textbox/AnimationPlayer.connect("animation_finished",self,"_on_Fade_Out_finished")
 	pass
 
 var text_stabbing := false
@@ -26,15 +27,15 @@ func start_text_stab(_text:String,_text_scale:float,_appear_length:float,overrid
 
 
 func _on_DialogStabTimer_timeout():
-	print("ON DIALOGSTABTIMER TIMEzoUT")
-	$Viewport/Textbox/AnimationPlayer.connect("animation_finished",self,"_on_Fade_Out_finished")
+#	print("ON DIALOGSTABTIMER TIMEzoUT")
+	
 	$Viewport/Textbox/AnimationPlayer.play("Fade out")
 	
 	
 	pass # Replace with function body.
 func _on_Fade_Out_finished(animation_name):
 	if animation_name == "Fade out":
-		print("ON DIALOGSTABTIMER TIMEzoUT- FADE OUT FINISHED")
+#		print("ON DIALOGSTABTIMER TIMEzoUT- FADE OUT FINISHED")
 		text_stabbing = false;
 		text = ""
 		appear_length = -1;

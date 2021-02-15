@@ -7,6 +7,7 @@ export(NodePath) var UI_path;
 var user_interface
 export(NodePath) var client_path
 var client
+var nav #NavMesh
 
 export(float) var MOVE_SPEED = 12
 export(float) var MOVE_ACC =20
@@ -15,16 +16,21 @@ export(float) var GRAVITY = 0.98
 export(float) var MAX_FALL_SPEED = 30
 export(float) var H_LOOK_SENS = 1
 export(float) var V_LOOK_SENS = 1
+var move_vel = 0;
+var y_velo = 0
 
 onready var cam = $CamBase
 onready var anim = $pickpocket/AnimationPlayer
 onready var inventory= get_parent()
 
-var move_vel = 0;
-var y_velo = 0
+var dialog_name = "Player"
+export(Texture) var dialog_speaker_texture
+
 func _ready():
 	user_interface = get_node(UI_path)
 	client = get_node(client_path)
+	nav = client.world.nav
+	nav.add_tracking_node(self)
 	anim.get_animation("Armature|Walk").set_loop(true)
 	
 var interactive_ui
@@ -50,6 +56,14 @@ func _input(event):
 #						user_interface.show_inventory_ui(chest_inventory_ui,interactive)
 #					else: 
 #						user_interface.hide_inventory_ui(interactive_ui,interactive)
+var near_nav_point:Vector3
+var near_nav_mesh:Object # NavMeshInstance
+var nav_shift_radius:float = 4
+var nav_monitored_by_nodes := []
+
+signal nav_point_shift(_self,nav_point_vec3,nav_mesh)
+var counttt:=0
+
 func _physics_process(delta):
 	if client.is_client():
 		var move_vec:= Vector3()
@@ -69,6 +83,15 @@ func _physics_process(delta):
 		if Vector3(move_vec.x,0,move_vec.z).length()>0.05:
 			$pickpocket.look_at(transform.origin+Vector3(move_vec.x,0,move_vec.z),Vector3(0,1,0))
 		move_and_slide(move_vec,Vector3(0,1,0))
+		if (near_nav_point-global_transform.origin).length()>nav_shift_radius:
+			var new_near_nav_point =  nav.get_closest_point(global_transform.origin)
+			var new_near_nav_mesh = nav.get_closest_point_owner(global_transform.origin)
+			if (new_near_nav_mesh != near_nav_mesh) or (new_near_nav_point != near_nav_point):
+				near_nav_point = new_near_nav_point
+				near_nav_mesh  = new_near_nav_mesh
+				counttt+=1
+#				print("Player SHIFTY:",counttt)
+				emit_signal("nav_point_shift",self,near_nav_point,near_nav_mesh) 
 
 		
 		var grounded = is_on_floor()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://entities/item/ItemDrop3D.tscn" type="PackedScene" id=1]
 [ext_resource path="res://3d_assets/ps1_shader_floor.tres" type="Material" id=2]
@@ -7,6 +7,7 @@
 [ext_resource path="res://scenes/multiplayer_world/3d_scene_multiplayer_test.gd" type="Script" id=5]
 [ext_resource path="res://entities/chests/Interactive3D.tscn" type="PackedScene" id=6]
 [ext_resource path="res://entities/chests/Interactive3D_test.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/main/Navigation.gd" type="Script" id=8]
 [ext_resource path="res://entities/citizens/shopkeeper_citizen_entity/ShopkeeperEntity.tscn" type="PackedScene" id=9]
 
 [sub_resource type="NavigationMesh" id=1]
@@ -16,6 +17,9 @@ cell/size = 1.0
 cell/height = 1.1
 agent/height = 2.2
 agent/radius = 0.8
+filter/low_hanging_obstacles = true
+filter/ledge_spans = true
+filter/filter_walkable_low_height_spans = true
 
 [sub_resource type="CubeMesh" id=2]
 subdivide_width = 14
@@ -28,6 +32,8 @@ data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1
 [sub_resource type="Environment" id=4]
 fog_enabled = true
 fog_color = Color( 0.701961, 0.568627, 0.501961, 1 )
+
+[sub_resource type="QuadMesh" id=5]
 
 [node name="World" type="Spatial"]
 script = ExtResource( 5 )
@@ -43,6 +49,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545506, 1.50695, -5.99436 )
 [node name="ItemDropper3D" parent="World" instance=ExtResource( 4 )]
 
 [node name="Navigation" type="Navigation" parent="World"]
+script = ExtResource( 8 )
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="World/Navigation"]
 navmesh = SubResource( 1 )
@@ -59,7 +66,8 @@ mesh = SubResource( 2 )
 material/0 = ExtResource( 2 )
 
 [node name="StaticBody" type="StaticBody" parent="World/Navigation/NavigationMeshInstance/MeshInstance"]
-collision_layer = 3
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.000235862, 0, 0 )
+collision_layer = 2
 
 [node name="CollisionShape" type="CollisionShape" parent="World/Navigation/NavigationMeshInstance/MeshInstance/StaticBody"]
 shape = SubResource( 3 )
@@ -69,12 +77,10 @@ script = ExtResource( 3 )
 
 [node name="Interactive3D" parent="World/Navigation/NavigationMeshInstance/Chests" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.40637, -1.50749, -7.66471 )
-collision_layer = 2147483657
 collision_mask = 2147483649
 
 [node name="Interactive3D2" parent="World/Navigation/NavigationMeshInstance/Chests" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.97803, -1.50749, -7.66471 )
-collision_layer = 2147483657
 collision_mask = 2147483649
 inventory_contents = "{\"0\":{ \"Type\": \"Small Stack\",
 		\"Item Name\":\"Golden Coin\",
@@ -88,32 +94,377 @@ inventory_contents = "{\"0\":{ \"Type\": \"Small Stack\",
 
 [node name="Interactive3D3" parent="World/Navigation/NavigationMeshInstance/Chests" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.40637, -1.50749, -18.4207 )
-collision_layer = 2147483657
 collision_mask = 2147483649
 
 [node name="Interactive3D4" parent="World/Navigation/NavigationMeshInstance/Chests" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.97803, -1.50749, -18.4207 )
-collision_layer = 2147483657
 collision_mask = 2147483649
 
 [node name="Interactive3D5" parent="World/Navigation/NavigationMeshInstance/Chests" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.40637, -1.50749, -28.3091 )
-collision_layer = 2147483657
 collision_mask = 2147483649
 
 [node name="Interactive3D6" parent="World/Navigation/NavigationMeshInstance/Chests" instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.97803, -1.50749, -28.3091 )
-collision_layer = 2147483657
 collision_mask = 2147483649
 
 [node name="ShopkeeperEntity" parent="World/Navigation" groups=[
 "CitizenEntities",
 ] instance=ExtResource( 9 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.578725, -15.6349 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
 chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity2" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity3" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity4" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity5" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity6" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity7" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity8" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity9" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity10" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity11" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity12" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity13" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity14" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity15" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity16" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity17" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity18" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity19" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity20" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity21" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity22" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity23" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity24" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity25" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity26" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity27" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity28" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity29" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity30" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity31" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity32" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity33" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity34" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity35" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity36" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity37" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity38" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity39" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity40" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity41" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity42" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity43" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity44" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity45" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity46" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity47" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity48" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity49" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
+
+[node name="ShopkeeperEntity50" parent="World/Navigation" groups=[
+"CitizenEntities",
+] instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.54636, -0.578725, -8.26689 )
+chest_paths = [ NodePath("../NavigationMeshInstance/Chests/Interactive3D"), NodePath("../NavigationMeshInstance/Chests/Interactive3D2"), NodePath("../NavigationMeshInstance/Chests/Interactive3D3"), NodePath("../NavigationMeshInstance/Chests/Interactive3D4"), NodePath("../NavigationMeshInstance/Chests/Interactive3D5"), NodePath("../NavigationMeshInstance/Chests/Interactive3D6") ]
+nav_path = NodePath("..")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="World"]
 environment = SubResource( 4 )
+
+[node name="MeshInstance" type="MeshInstance" parent="World"]
+transform = Transform( 1, 0, 0, 0, 0.0107858, 0.999942, 0, -0.999942, 0.0107858, 0, 3.40354, 0 )
+mesh = SubResource( 5 )
+material/0 = null
 
 [node name="Player1Pos" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.52111, 0.630473, 0 )

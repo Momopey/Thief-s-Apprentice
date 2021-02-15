@@ -40,7 +40,8 @@ func _input(event):
 	if event is InputEventKey:
 		if event.pressed :
 			if event.scancode == KEY_SPACE:
-				_on_Dialog_Player_pressed_spacebar()
+#				_on_Dialog_Player_pressed_spacebar()	
+				pass
 			if event.scancode == KEY_1:
 				_on_press_number(1)
 			if event.scancode == KEY_2:
@@ -80,12 +81,12 @@ func clear_timer():
 		timer.queue_free();
 		timer= null;
 
-func _on_Dialog_Player_pressed_spacebar():
-	if _is_waiting():
-		_SpaceBar_Icon.visible = false
-		_get_next_node()
-		if _is_playing():
-			_play_node()
+#func _on_Dialog_Player_pressed_spacebar():
+#	if _is_waiting():
+#		_SpaceBar_Icon.visible = false
+#		_get_next_node()
+#		if _is_playing():
+#			_play_node()
 func _on_press_number(num:int):
 	if _is_waiting():
 		if data["Outs"].size()>num-1:
@@ -93,9 +94,9 @@ func _on_press_number(num:int):
 			var out =data["Outs"][num-1]["Out"];
 			if _Story_Reader.get_slot_count(_did, _nid)>out:
 				if "Dialog End Call" in data:
-						for proc in data["Dialog End Call"]:
-							if "Func" in proc:
-								get(proc["On"]).call(proc["Func"])
+					for proc in data["Dialog End Call"]:
+						if "Func" in proc:
+							get(proc["On"]).call(proc["Func"])
 				_get_next_node(out)
 				if _is_playing():
 					_play_node()
@@ -135,7 +136,15 @@ func _play_node():
 	if result.error==OK:
 		data = result.result
 		var speaker_text = data["Speaker"]
-		var dialog_text = data["Dialog"]
+		_Speaker_LBL.text = speaker_text
+		if "Dialog BBCode" in data:
+			_Body_LBL.bbcode_enabled = true
+			_Body_LBL.bbcode_text = data["Dialog BBCode"]
+		else:
+			_Body_LBL.bbcode_enabled = false
+			_Body_LBL.text =  data["Dialog"]
+		
+		
 		if "Dialog Start Call" in data:
 			for proc in data["Dialog Start Call"]:
 				if "Func" in proc:
@@ -145,12 +154,16 @@ func _play_node():
 #						"player":
 #							player.call(proc["Func"])s
 		
-		_Speaker_LBL.text = speaker_text
+		
 		if speaker.get("dialog_name") == speaker_text:
 			print("IT IS THE SPEAKER TALKING")
 			$Dialog_Box/Body_NinePatchRect/Speaker_NinePatchRect/TextureRect.texture = speaker.dialog_speaker_texture
+		print("Player name:"+player.get("dialog_name")+" comp "+speaker_text)
+		if player.get("dialog_name") == speaker_text:
+			print("Setting as player speaker texture")
+			$Dialog_Box/Body_NinePatchRect/Speaker_NinePatchRect/TextureRect.texture = player.dialog_speaker_texture
 		
-		_Body_LBL.text = dialog_text
+#		_Body_LBL.text = dialog_text
 		for prompt_box in prompt_boxes:
 			prompt_box.visible = false
 		for i in range(data["Outs"].size()):

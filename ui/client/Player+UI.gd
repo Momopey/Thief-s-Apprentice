@@ -6,6 +6,8 @@ onready var user_interface = $UserInterface
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
+
+var world # Worldx
 func get_player():
 	return $Player
 func is_client():
@@ -19,7 +21,6 @@ func network():
 # Called when the node enters the scene tree for the first time.
 
 var holding_item = null
-
 var open = false
 var open_container_slot=null
 var open_container_ui=null

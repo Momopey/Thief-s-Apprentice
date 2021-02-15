@@ -19,7 +19,7 @@ export(float) var MOVE_SPEED = 10
 export(NodePath) var timer_path;
 var timer:Timer
 
-onready var nav:Navigation = get_parent()
+var nav:Navigation
 
 
 # Declare member variables here. Examples:
@@ -37,31 +37,46 @@ var player_client
 
 #class ShopkeeperAI extends CitizenAI:
 
-export(Array,NodePath) var chest_paths	
+export (NodePath) var shopkeeper_path
+var shopkeeper :Node	
 var chests := []
+export(NodePath) var nav_target_path
+var nav_target
+var rng = RandomNumberGenerator.new()
 func _ready():
+	rng.randomize()
 	ai = CitizenAI.new()
 	ai.init(self,[PreventTheftShopkeeperCitizenGoal.new()])
-	
+	shopkeeper = get_node(shopkeeper_path)
+	nav = shopkeeper.get_nav()
+	nav_target = get_node(nav_target_path)
+	nav_target.connect_to_nav(nav)
+	chests = shopkeeper.chests
 	if is_server():
 		assert(nav is Navigation)
 		timer = get_node(timer_path)
 	#	player_client = GameManager.clients[0]
 		assert(timer is Timer)
-	for chest_path in chest_paths:
-		chests.append(get_node(chest_path))	
-		ai.on_object_attend(get_node(chest_path),AreaEnterAttentionEvent.new().init(self,get_node(chest_path),0).init_2($LocalZone))
+#		nav.add_tracking_node(self)
+		
+#	for chest_path in chest_paths:
+#		chests.append(get_node(chest_path))	
+	
 #		get_node(chest_path).connect("attention_event",self,"_bruh")
 	
 	pass # Replace with function body.
 #func _bruh(data):
 #	print("BRUH YEP")
+func prep_chests():
+	for chest in chests:
+		print("Chest:",chest)
+		ai.on_object_attend(chest,AreaEnterAttentionEvent.new().init(self,chest,0).init_2(nav_target))
 
 class PreventTheftShopkeeperCitizenGoal extends CitizenGoal:
 	func node_to_focus(object:Node,attention_event):
 		if attention_event is AreaEnterAttentionEvent:
-			if attention_event.area == ai.citizen.get_node("LocalZone"):
-				print("LOCALZONE ENTERED:"+ str(attention_event.object))
+			if attention_event.area == ai.citizen.nav_target:
+#				print("LOCALZONE ENTERED:"+ str(attention_event.object))
 				if attention_event.subject in ai.citizen.chests:
 					return ChestInspectShopkeeperCitizenFocus.new().init(ai,self,object)
 		if attention_event is InteractChestAttentionEvent:
@@ -86,7 +101,7 @@ class PreventTheftShopkeeperCitizenGoal extends CitizenGoal:
 					ai.add_target(ChestInspectShopkeeperCitizenTarget.new().init(ai,self,focus))
 					best_found = true
 				else: 
-					focus.salience += 1
+					focus.salience += ai.citizen.rng.randi_range(1,2)
 					if focus.salience>4:
 						focus.salience = 4
 						
@@ -117,7 +132,7 @@ class ChestInspectShopkeeperCitizenTarget extends CitizenTarget:
 	func on_kill():
 		ai.citizen.targeting= false
 		
-		print("Killing chest inspect")
+#		print("Killing chest inspect") G
 		
 		
 class SuspiciousSubjectShopkeeperCitizenFocus extends CitizenFocus:
@@ -160,7 +175,25 @@ class SuspiciousSubjectShopkeeperCitizenTarget extends CitizenTarget:
 var ai:CitizenAI
 var targeting := false
 var target_loc : Vector3
+var vel = Vector3()
+var MAX_MOVE_ACCEL:float = 30
 
+#var near_nav_point:Vector3
+#var near_nav_mesh:Object # NavMeshInstance
+#var nav_shift_radius:float = 1
+#var nav_monitor_radius:float = 14
+#var nav_inrange_nodes := []
+#var nav_monitored_by_nodes := []
+#signal nav_point_shift(_self,nav_point_vec3,nav_mesh)
+#
+#func _on_node_enter_monitor_radius(node:Node):
+#	print("WOW, A NODE ENTERED MY MONITOR RADIUS WOW WOWOWOWOWOWO :",node)
+#	pass
+#func _on_node_exit_monitor_radius(node:Node):
+#	pass
+#	print("WOW, A NODE EXITED MY MONITOR RADIUS WOW WOWOWOWOWOWO :",node)
+
+var counttt= 0
 func _physics_process(delta):
 	if is_server():
 		player_client = GameManager.clients[0]
@@ -171,7 +204,8 @@ func _physics_process(delta):
 				if direction.length()<1:
 					path_node+=1
 				else:
-					move_and_slide(direction.normalized()*MOVE_SPEED,Vector3(0,1,0))
+					vel = vel.move_toward(direction.normalized()*MOVE_SPEED,MAX_MOVE_ACCEL*delta)
+					vel = move_and_slide(vel,Vector3(0,1,0))
 			else:
 				move_to(target_loc)
 		if get_tree().network_peer:
@@ -180,10 +214,13 @@ remote func _set_transform(glob_trans):
 	global_transform= glob_trans
 
 var count := 0 
+
+
 func move_to(target_pos:Vector3):
 #	print("MOVING:",count)
 	count+=1
-	path = nav.get_simple_path(global_transform.origin,target_pos)
+	path = nav.get_simple_path(global_transform.origin,target_pos,true)
+#	path = [Vector3(rng.randf_range(-20,20),rng.randf_range(-20,20),0)]
 	path_node = 0
 
 func _on_Timer_timeout():
@@ -201,20 +238,28 @@ func _on_Timer_timeout():
 	
 #var points :=  []
 func _process(delta):
+	
+	
 	ai.on_process(delta)
 	var ig = $attentions/attention_line
 	ig.clear()
 	for focus in ai.focuses:
 		ig.begin(Mesh.PRIMITIVE_LINE_STRIP)
-		var points = [transform.origin,focus.object.global_transform.origin]
+		var points = [global_transform.origin,focus.object.global_transform.origin]
 		for p in points:
 			ig.add_vertex(p)
 		ig.end()
+#	if near_nav_point:
+#		ig.begin(Mesh.PRIMITIVE_LINE_STRIP)
+#		var points = [global_transform.origin,near_nav_point]
+#		for p in points:
+#			ig.add_vertex(p)
+#		ig.end()
 
 
 func _on_PeriferalZone_body_entered(body):
 	if ai:
-		ai.on_object_attend(body,AreaEnterAttentionEvent.new().init(self,body,0).init_2($LocalZone))
+		ai.on_object_attend(body,AreaEnterAttentionEvent.new().init(self,body,0).init_2(nav_target))
 	else:
 		print("AI NULL")
 	pass # Replace with function body.
@@ -225,3 +270,23 @@ func _on_PeriferalZone_body_entered(body):
 func _on_GoalProcessTimer_timeout():
 	ai.goal_process($GoalProcessTimer.wait_time)
 	pass # Replace with function body.
+
+
+func _on_LocalZone_body_entered(body):
+#	print("object entered fuck you:",local_zone)
+	if ai:
+#		print("Is this working right:",local_zone is Area)
+		ai.on_object_attend(body,AreaEnterAttentionEvent.new().init(self,body,0).init_2(nav_target))
+	else:
+		print("AI NULL")
+	pass # Replace with function body.
+
+
+func _on_NavTarget__on_node_enter_monitor_radius(node):
+	print("object entered fuck you:",node)
+#	if ai:
+#		ai.on_object_attend(node,AreaEnterAttentionEvent.new().init(self,node,0).init_2(nav_target))
+#	else:
+#		print("AI NULL")
+#	pass # Replace with function body.
+

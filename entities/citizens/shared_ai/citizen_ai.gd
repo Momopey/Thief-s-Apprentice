@@ -70,6 +70,8 @@ func object_attended(obj:Node):
 	return null
 	
 func on_object_attend(obj:Node,attention_event): # obj:Node, attention_event:AttentionEvent
+	if (not obj) or (not attention_event):
+		return
 	var in_focus := false
 	for focus in focuses:
 		if focus.object == obj:

@@ -14,6 +14,8 @@ data = PoolVector3Array( -1, 1, 1, 1, 1, 1, -1, -1, 1, 1, 1, 1, 1, -1, 1, -1, -1
 extents = Vector3( 4.42496, 3.2092, 2.97735 )
 
 [node name="Interactive3D" type="KinematicBody"]
+collision_layer = 2
+collision_mask = 0
 script = ExtResource( 2 )
 inventory_ui_scene = ExtResource( 3 )
 inventory_path = NodePath("CollisionShape")
@@ -29,6 +31,7 @@ shape = SubResource( 2 )
 script = ExtResource( 1 )
 
 [node name="ChestZone" type="Area" parent="."]
+collision_layer = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="ChestZone"]
 transform = Transform( 0.684806, 0, 0, 0, 0.684806, 0, 0, 0, 0.894474, 0, 0, 0 )

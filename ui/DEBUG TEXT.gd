@@ -14,6 +14,7 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	text = "OBJECTIVE: LOOT TO INCREASE UR VALUE \n"
+	text = "FPS:"+ str(Engine.get_frames_per_second())+"\n"
+	text +="OBJECTIVE: LOOT TO INCREASE UR VALUE \n"
 	text+="Value:"+String(get_parent().get_parent().get_value())+"\n"
 	pass

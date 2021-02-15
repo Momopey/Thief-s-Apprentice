@@ -1,9 +1,9 @@
 extends AttentionEvent
 class_name AreaEnterAttentionEvent
 
-var area : Area
+var area
 
-func init_2(_area: Area):
+func init_2(_area):
 	area = _area
 	return self
 

@@ -29,7 +29,8 @@ prompt_box_paths = [ NodePath("Dialog_Box/Body_NinePatchRect/GridContainer/Panel
 story_resource = ExtResource( 5 )
 
 [node name="Dialog_Box" type="Control" parent="."]
-anchor_right = 1.0
+anchor_left = -0.000232665
+anchor_right = 0.999767
 anchor_bottom = 1.0
 margin_left = 12.1878
 margin_top = 537.928
@@ -70,15 +71,16 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Body_Label" type="Label" parent="Dialog_Box/Body_NinePatchRect/MarginContainer"]
+[node name="Body_Label" type="RichTextLabel" parent="Dialog_Box/Body_NinePatchRect/MarginContainer"]
 margin_right = 784.0
 margin_bottom = 160.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 4 )
+custom_fonts/normal_font = ExtResource( 4 )
+visible_characters = 0
+percent_visible = 0.0
 text = "This is where the dialog text is displayed.
 Press F6 to run this example. ^_^"
-autowrap = true
 
 [node name="Body_AnimationPlayer" type="AnimationPlayer" parent="Dialog_Box/Body_NinePatchRect/MarginContainer/Body_Label"]
 anims/TextDisplay = SubResource( 1 )
