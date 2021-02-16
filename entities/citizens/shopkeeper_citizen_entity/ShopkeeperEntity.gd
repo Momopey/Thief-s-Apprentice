@@ -177,22 +177,6 @@ var targeting := false
 var target_loc : Vector3
 var vel = Vector3()
 var MAX_MOVE_ACCEL:float = 30
-
-#var near_nav_point:Vector3
-#var near_nav_mesh:Object # NavMeshInstance
-#var nav_shift_radius:float = 1
-#var nav_monitor_radius:float = 14
-#var nav_inrange_nodes := []
-#var nav_monitored_by_nodes := []
-#signal nav_point_shift(_self,nav_point_vec3,nav_mesh)
-#
-#func _on_node_enter_monitor_radius(node:Node):
-#	print("WOW, A NODE ENTERED MY MONITOR RADIUS WOW WOWOWOWOWOWO :",node)
-#	pass
-#func _on_node_exit_monitor_radius(node:Node):
-#	pass
-#	print("WOW, A NODE EXITED MY MONITOR RADIUS WOW WOWOWOWOWOWO :",node)
-
 var counttt= 0
 func _physics_process(delta):
 	if is_server():

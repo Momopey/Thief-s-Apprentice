@@ -1,8 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://entities/player/Player3D.gd" type="Script" id=1]
 [ext_resource path="res://3d_assets/pickpocket.tscn" type="PackedScene" id=2]
 [ext_resource path="res://entities/player/player_headshot.png" type="Texture" id=3]
+[ext_resource path="res://entities/shared/NavTarget.gd" type="Script" id=4]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 2.05221
@@ -19,6 +20,7 @@ transform = Transform( 0.2, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 0, 0, 0 )
 collision_mask = 0
 script = ExtResource( 1 )
 dialog_speaker_texture = ExtResource( 3 )
+nav_target_path = NodePath("NavTarget")
 
 [node name="pickpocket" parent="." instance=ExtResource( 2 )]
 
@@ -39,5 +41,10 @@ collision_mask = 4
 [node name="CollisionShape" type="CollisionShape" parent="PickupZone"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.154023, 5.07955, 0.0866187 )
 shape = SubResource( 2 )
+
+[node name="NavTarget" type="Spatial" parent="."]
+script = ExtResource( 4 )
+nav_shift_radius = 2.0
+entity_path = NodePath("..")
 [connection signal="body_entered" from="PickupZone" to="." method="_on_PickupZone_body_entered"]
 [connection signal="body_exited" from="PickupZone" to="." method="_on_PickupZone_body_exited"]

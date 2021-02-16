@@ -66,7 +66,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.60441, 0 )
 [node name="NavTarget" type="Spatial" parent="ShopkeeperEntity"]
 script = ExtResource( 8 )
 nav_monitoring = true
-nav_monitor_radius = 8.0
 entity_path = NodePath("..")
 [connection signal="timeout" from="ShopkeeperEntity/TargetingTimer" to="ShopkeeperEntity" method="_on_Timer_timeout"]
 [connection signal="timeout" from="ShopkeeperEntity/GoalProcessTimer" to="ShopkeeperEntity" method="_on_GoalProcessTimer_timeout"]

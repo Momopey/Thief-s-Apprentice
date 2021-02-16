@@ -5,9 +5,10 @@ var tracking_nodes:= []
 func add_tracking_node(node:Spatial):
 	tracking_nodes.append(node)
 	node.connect("nav_point_shift",self,"_on_tracking_nav_shift")
+	print("ADDING TRACKING NODE")
 func _on_tracking_nav_shift(node,new_nav_point,new_nav_mesh):
 #	print("IT INDEED SHIFTED")
-	if node.get("nav_monitor_radius"):
+	if node.nav_monitoring:
 		#deal with things entering and exiting this track because it moved
 		#exiting nodes
 		for i in range(node.nav_inrange_nodes.size() - 1, -1, -1):
@@ -39,9 +40,9 @@ func _on_tracking_nav_shift(node,new_nav_point,new_nav_mesh):
 	for tracking_node in tracking_nodes:
 		if tracking_node == node:
 			continue
-		if tracking_node.get("nav_monitor_radius") == null:
+		if not tracking_node.nav_monitoring:
 			continue
-#		print("Wow, thats a monitoring node")
+		
 		var dist_tween = _linear_distance(node,tracking_node)
 		if dist_tween<tracking_node.nav_monitor_radius:
 			if not(node in tracking_node.nav_inrange_nodes):

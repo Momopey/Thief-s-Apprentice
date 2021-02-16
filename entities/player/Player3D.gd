@@ -26,11 +26,16 @@ onready var inventory= get_parent()
 var dialog_name = "Player"
 export(Texture) var dialog_speaker_texture
 
+export(NodePath) var nav_target_path
+var nav_target
+
 func _ready():
 	user_interface = get_node(UI_path)
 	client = get_node(client_path)
 	nav = client.world.nav
-	nav.add_tracking_node(self)
+	nav_target = get_node(nav_target_path)
+	nav_target.connect_to_nav(nav)
+	
 	anim.get_animation("Armature|Walk").set_loop(true)
 	
 var interactive_ui
@@ -46,24 +51,7 @@ func _input(event):
 #		if event.is_action_pressed("interact"):
 		for interactive in interactives:
 			interactive.interact(event,self)
-#				if interactive is ChestInteractiveClass|| interactive is ChestInteractive3DClass:
-#					if !interactive.open:
-#						var chest_inventory_ui=interactive.inventory_ui_scene.instance()
-#						interactive_ui = chest_inventory_ui
-#						chest_inventory_ui.inventory=interactive.inventory_source()
-#						chest_inventory_ui.ui = user_interface
-#						interactive.emit_attention_event(InteractChestAttentionEvent.new().init(interactive,client.player,0).init_2(InteractChestAttentionEvent.InteractionType.OPEN,client.player))
-#						user_interface.show_inventory_ui(chest_inventory_ui,interactive)
-#					else: 
-#						user_interface.hide_inventory_ui(interactive_ui,interactive)
-var near_nav_point:Vector3
-var near_nav_mesh:Object # NavMeshInstance
-var nav_shift_radius:float = 4
-var nav_monitored_by_nodes := []
-
-signal nav_point_shift(_self,nav_point_vec3,nav_mesh)
-var counttt:=0
-
+			
 func _physics_process(delta):
 	if client.is_client():
 		var move_vec:= Vector3()
@@ -83,15 +71,15 @@ func _physics_process(delta):
 		if Vector3(move_vec.x,0,move_vec.z).length()>0.05:
 			$pickpocket.look_at(transform.origin+Vector3(move_vec.x,0,move_vec.z),Vector3(0,1,0))
 		move_and_slide(move_vec,Vector3(0,1,0))
-		if (near_nav_point-global_transform.origin).length()>nav_shift_radius:
-			var new_near_nav_point =  nav.get_closest_point(global_transform.origin)
-			var new_near_nav_mesh = nav.get_closest_point_owner(global_transform.origin)
-			if (new_near_nav_mesh != near_nav_mesh) or (new_near_nav_point != near_nav_point):
-				near_nav_point = new_near_nav_point
-				near_nav_mesh  = new_near_nav_mesh
-				counttt+=1
-#				print("Player SHIFTY:",counttt)
-				emit_signal("nav_point_shift",self,near_nav_point,near_nav_mesh) 
+#		if (near_nav_point-global_transform.origin).length()>nav_shift_radius:
+#			var new_near_nav_point =  nav.get_closest_point(global_transform.origin)
+#			var new_near_nav_mesh = nav.get_closest_point_owner(global_transform.origin)
+#			if (new_near_nav_mesh != near_nav_mesh) or (new_near_nav_point != near_nav_point):
+#				near_nav_point = new_near_nav_point
+#				near_nav_mesh  = new_near_nav_mesh
+#				counttt+=1
+##				print("Player SHIFTY:",counttt)
+#				emit_signal("nav_point_shift",self,near_nav_point,near_nav_mesh) 
 
 		
 		var grounded = is_on_floor()
